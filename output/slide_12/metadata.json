@@ -1,0 +1,47 @@
+{
+  "slide": 12,
+  "width": 1920,
+  "height": 1080,
+  "duration": 13.82,
+  "layers": [
+    {
+      "name": "slide_12_key_point_card_01.png",
+      "type": "key_point_card",
+      "x": 1022,
+      "y": 144,
+      "width": 788,
+      "height": 379,
+      "z_index": 5,
+      "animation": "fade-in-up",
+      "start": 0.45,
+      "duration": 0.7,
+      "narration_cue": "key_point_card"
+    },
+    {
+      "name": "slide_12_key_point_card_02.png",
+      "type": "key_point_card",
+      "x": 123,
+      "y": 157,
+      "width": 696,
+      "height": 786,
+      "z_index": 6,
+      "animation": "fade-in-up",
+      "start": 4.32,
+      "duration": 0.7,
+      "narration_cue": "key_point_card"
+    },
+    {
+      "name": "slide_12_illustration_01.png",
+      "type": "illustration",
+      "x": 1001,
+      "y": 576,
+      "width": 827,
+      "height": 454,
+      "z_index": 7,
+      "animation": "zoom-in",
+      "start": 8.2,
+      "duration": 0.7,
+      "narration_cue": "illustration"
+    }
+  ]
+}

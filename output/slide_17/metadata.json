@@ -1,0 +1,60 @@
+{
+  "slide": 17,
+  "width": 1920,
+  "height": 1080,
+  "duration": 14.61,
+  "layers": [
+    {
+      "name": "slide_17_key_point_card_01.png",
+      "type": "key_point_card",
+      "x": 173,
+      "y": 90,
+      "width": 725,
+      "height": 281,
+      "z_index": 5,
+      "animation": "fade-in-up",
+      "start": 0.45,
+      "duration": 0.7,
+      "narration_cue": "key_point_card"
+    },
+    {
+      "name": "slide_17_illustration_01.png",
+      "type": "illustration",
+      "x": 181,
+      "y": 396,
+      "width": 709,
+      "height": 168,
+      "z_index": 6,
+      "animation": "zoom-in",
+      "start": 3.55,
+      "duration": 0.7,
+      "narration_cue": "illustration"
+    },
+    {
+      "name": "slide_17_key_point_card_02.png",
+      "type": "key_point_card",
+      "x": 1293,
+      "y": 90,
+      "width": 569,
+      "height": 939,
+      "z_index": 7,
+      "animation": "fade-in-up",
+      "start": 6.66,
+      "duration": 0.7,
+      "narration_cue": "key_point_card"
+    },
+    {
+      "name": "slide_17_illustration_02.png",
+      "type": "illustration",
+      "x": 51,
+      "y": 735,
+      "width": 1096,
+      "height": 300,
+      "z_index": 8,
+      "animation": "zoom-in",
+      "start": 9.76,
+      "duration": 0.7,
+      "narration_cue": "illustration"
+    }
+  ]
+}
