@@ -33,6 +33,8 @@ def find_ffmpeg():
         os.environ.get("FFMPEG_PATH"),
         str(ROOT / "node_modules" / "ffmpeg-static" / "ffmpeg"),
         str(ROOT / "node_modules" / "ffmpeg-static" / "ffmpeg.exe"),
+        str(ROOT.parent / "node_modules" / "ffmpeg-static" / "ffmpeg"),
+        str(ROOT.parent / "node_modules" / "ffmpeg-static" / "ffmpeg.exe"),
         shutil.which("ffmpeg"),
     ]
     for c in candidates:
