@@ -3,48 +3,50 @@
 把 NotebookLM 生成的「圖片型 PPTX/PDF」（每頁是一張完整圖片、沒有可編輯元件）
 轉成有逐元素載入動畫、繁體中文女聲旁白、可選字幕的 1920x1080 / 30fps MP4。
 
-整套流程已抽成可重用 Claude Code skill：`.claude/skills/pptx-to-animated-video/`
-（在任何專案目錄下對 Claude Code 輸入 `/pptx-to-animated-video <deck.pdf>` 即可重跑同樣 pipeline）。
+整套流程已抽成可重用 Claude Code skill：`.claude/skills/skill-pptx-to-animated-video/`
+（在任何專案目錄下對 Claude Code 輸入 `/skill-pptx-to-animated-video <deck.pdf>` 即可重跑同樣 pipeline）。
 
 > 本專案的演進歷程、所有 user prompt、與設計決策的「為什麼」：
 > - 流水帳：[`PROMPTS.md`](PROMPTS.md)
 > - 完整 work report：[`WORK_REPORT.md`](WORK_REPORT.md)
 
-## 兩個 deck
+## 主要 task
 
 | 目錄 | Deck | 頁數 | 狀態 |
 |---|---|---|---|
-| `./` （root） | NotebookLM 投影片（20 頁） | 20 | session 1 完成，奠定 segmentation 規則 |
-| `writing-os/` | The A-Z Writing OS.pdf | 13 | session 2-3 完成，最新影片在 `writing-os/final/` |
+| `task=HW6-Startup50-Summary/` | 50_Startups_Feature_Selection.pdf | 20 | session 1 完成，完整 pipeline 已歸位 |
+| `task=writing-os/` | The A-Z Writing OS.pdf | 13 | session 2-3 完成，最新影片在 `task=writing-os/final/` |
+| `task=A2Z-animation/` | A2Z.pdf | 13 | 已整理完成，完整 pipeline 已歸位 |
 
-兩個 deck 都跑相同的 pipeline，所有公用邏輯都在 skill 裡。
+每個 task folder 都是自包含的；共用邏輯都在 skill 裡。
 
 ## Pipeline
 
 ```
-sources/*.pdf ──> output/slide_##/original.png            (PDF 轉 1920x1080 PNG)
+task=HW6-Startup50-Summary/sources/*.pdf ──> task=HW6-Startup50-Summary/output/slide_##/original.png
+                        (PDF 轉 1920x1080 PNG)
                         │
                         ▼  scripts/segment_elements.py
-        output/slide_##/  透明 element layers + background.png + metadata.json
+        task=HW6-Startup50-Summary/output/slide_##/  透明 element layers + background.png + metadata.json
                         │
                         ▼  scripts/build_timeline.py
-        narration/narration_timing.json + subtitles + hyperframes/project.json
+        task=HW6-Startup50-Summary/narration/narration_timing.json + subtitles + hyperframes/project.json
                         │
                         ▼  scripts/render_final_video.py
-        final/final_video_with_voiceover(.../_and_subtitles).mp4
+        task=HW6-Startup50-Summary/final/final_video_with_voiceover(.../_and_subtitles).mp4
 ```
 
 旁白時間軸為主、反向安排動畫出現時間（layer 的進場時間排在該頁旁白窗口內）。
 
-## 重新生成（writing-os 子專案）
+## 重新生成（task folder）
 
 ```powershell
-cd writing-os
+cd task=HW6-Startup50-Summary
 
 # 1. 重生 TTS（可換語速：-8% 教學語速、+38% ≈ 1.5× 快）
-python "../.claude/skills/pptx-to-animated-video/scripts/tts_edge.py" zh-TW-HsiaoChenNeural +38%
+python "../skill-pptx-to-animated-video/scripts/tts_edge.py" zh-TW-HsiaoChenNeural +38%
 
-# 2. 重切全部 13 頁（或指定頁碼如：python scripts/segment_elements.py 2 4）
+# 2. 重切全部頁面（或指定頁碼如：python scripts/segment_elements.py 2 4）
 python scripts/segment_elements.py
 
 # 3. 依新 metadata 重建旁白時間軸 + 字幕 + HyperFrames 專案
@@ -88,8 +90,8 @@ python scripts/render_final_video.py
     兩 panel 版面自動「左 → 右」。
 12. **品質門檻**：每頁所有 layers 疊回 background 必須和原圖**零像素差異**（>20 強度差才算）。
 
-切圖過程可視化：`work_preview/element_debug/slide_##_debug.jpg`（原圖／偵測框／挖空背景／重組驗證），
-攤開圖：`work_preview/slide_##_layer_gallery.jpg`（每層的透明 PNG、座標、出場時間）。
+切圖過程可視化：`task=HW6-Startup50-Summary/work_preview/element_debug/slide_##_debug.jpg`（原圖／偵測框／挖空背景／重組驗證），
+攤開圖：`task=HW6-Startup50-Summary/work_preview/slide_##_layer_gallery.jpg`（每層的透明 PNG、座標、出場時間）。
 
 ## 旁白 / Voiceover
 
@@ -112,28 +114,28 @@ python scripts/render_final_video.py
 ## 瀏覽器預覽（HyperFrames）
 
 ```powershell
-cd writing-os
+cd task=HW6-Startup50-Summary
 python -m http.server 8080
 ```
 
 開 <http://localhost:8080/hyperframes/index.html> 按 Play：
 背景＋透明 layers 按 `project.json` 的時間軸逐個進場，同步播放各頁旁白 MP3。
 
-## 輸出清單（writing-os/）
+## 輸出清單（task=HW6-Startup50-Summary/）
 
 | 路徑 | 內容 |
 |---|---|
-| `output/slide_##/` | original.png、background.png、透明 element layers、metadata.json |
-| `audio/` | 13 段 zh-TW 女聲旁白 MP3 |
-| `narration/` | 旁白稿、timing JSON、SRT/VTT（已分塊） |
-| `hyperframes/` | index.html、styles.css、animation.js、project.json（瀏覽器預覽） |
-| `final/` | 無字幕版 MP4 + 燒錄字幕（letterbox）版 MP4 |
-| `work_preview/` | 切圖 debug 圖、layer 攤開圖、字幕檢查 frame |
+| `task=HW6-Startup50-Summary/output/` | original.png、background.png、透明 element layers、metadata.json |
+| `task=HW6-Startup50-Summary/audio/` | 20 段旁白 MP3 |
+| `task=HW6-Startup50-Summary/narration/` | 旁白稿、timing JSON、SRT/VTT（已分塊） |
+| `task=HW6-Startup50-Summary/hyperframes/` | index.html、styles.css、animation.js、project.json（瀏覽器預覽） |
+| `task=HW6-Startup50-Summary/final/` | 無字幕版 MP4 + 燒錄字幕（letterbox）版 MP4 |
+| `task=HW6-Startup50-Summary/work_preview/` | 切圖 debug 圖、layer 攤開圖、字幕檢查 frame |
 
 ## Skill 結構
 
 ```
-.claude/skills/pptx-to-animated-video/
+.claude/skills/skill-pptx-to-animated-video/
 ├── SKILL.md          # workflow、segmentation 品質規則、字幕規範
 └── scripts/
     ├── render_slides.py        # PDF → PNG
@@ -143,4 +145,4 @@ python -m http.server 8080
     └── render_final_video.py   # 字幕 letterbox 燒錄
 ```
 
-未來在任何專案要把圖片型投影片轉成旁白動畫 MP4，呼叫 `/pptx-to-animated-video` 即可。
+未來在任何專案要把圖片型投影片轉成旁白動畫 MP4，呼叫 `/skill-pptx-to-animated-video` 即可。

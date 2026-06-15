@@ -1,0 +1,604 @@
+{
+  "slide_01": {
+    "voiceover_file": "audio/slide_01_voiceover.mp3",
+    "start": 0.0,
+    "end": 17.57,
+    "script": "We are moving from narrow AI to general AI, and that changes how we think about work itself. In this deck, you will see two complementary paths: vibe coding and workflow automation. Together, they point toward a future where humans guide systems, not just operate tools.",
+    "cues": [
+      {
+        "time": 0.45,
+        "layer": "slide_01_title_01.png",
+        "action": "fade-in-down",
+        "spoken_content": "title"
+      },
+      {
+        "time": 3.01,
+        "layer": "slide_01_illustration_01.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 5.57,
+        "layer": "slide_01_illustration_02.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 8.13,
+        "layer": "slide_01_illustration_03.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 10.7,
+        "layer": "slide_01_illustration_04.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 13.26,
+        "layer": "slide_01_illustration_05.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      }
+    ]
+  },
+  "slide_02": {
+    "voiceover_file": "audio/slide_02_voiceover.mp3",
+    "start": 18.07,
+    "end": 36.33,
+    "script": "The old model was a single task: you asked, you executed, and you repeated. The new model is a loop of understanding, decomposing, using tools, checking results, and finishing the job. That shift is what makes AI useful for real work, not just isolated prompts.",
+    "cues": [
+      {
+        "time": 18.52,
+        "layer": "slide_02_title_01.png",
+        "action": "fade-in-down",
+        "spoken_content": "title"
+      },
+      {
+        "time": 22.54,
+        "layer": "slide_02_illustration_01.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 26.55,
+        "layer": "slide_02_illustration_02.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 30.57,
+        "layer": "slide_02_key_point_card_01.png",
+        "action": "fade-in-up",
+        "spoken_content": "key_point_card"
+      }
+    ]
+  },
+  "slide_03": {
+    "voiceover_file": "audio/slide_03_voiceover.mp3",
+    "start": 36.83,
+    "end": 55.02,
+    "script": "Vibe coding replaces manual coding and interface tweaking with natural language instructions. Instead of editing every detail yourself, you describe the intent and let AI translate that intent into execution. This makes the operator more like a creative director than a hands-on mechanic.",
+    "cues": [
+      {
+        "time": 37.28,
+        "layer": "slide_03_title_01.png",
+        "action": "fade-in-down",
+        "spoken_content": "title"
+      },
+      {
+        "time": 38.73,
+        "layer": "slide_03_icon_01.png",
+        "action": "pop-in",
+        "spoken_content": "icon"
+      },
+      {
+        "time": 40.19,
+        "layer": "slide_03_text_block_01.png",
+        "action": "fade-in-up",
+        "spoken_content": "text_block"
+      },
+      {
+        "time": 41.64,
+        "layer": "slide_03_text_block_02.png",
+        "action": "fade-in-up",
+        "spoken_content": "text_block"
+      },
+      {
+        "time": 43.09,
+        "layer": "slide_03_illustration_01.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 44.55,
+        "layer": "slide_03_illustration_02.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 46.0,
+        "layer": "slide_03_illustration_03.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 47.46,
+        "layer": "slide_03_illustration_04.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 48.91,
+        "layer": "slide_03_arrow_01.png",
+        "action": "wipe-in",
+        "spoken_content": "arrow"
+      },
+      {
+        "time": 50.36,
+        "layer": "slide_03_illustration_05.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 51.82,
+        "layer": "slide_03_illustration_06.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      }
+    ]
+  },
+  "slide_04": {
+    "voiceover_file": "audio/slide_04_voiceover.mp3",
+    "start": 55.52,
+    "end": 72.87,
+    "script": "On the left, the traditional operator is trapped inside a messy, fixed environment. On the right, the director shapes the outcome by guiding design, programming, content, and analysis. The key change is not just speed, but a new kind of control over the work.",
+    "cues": [
+      {
+        "time": 55.97,
+        "layer": "slide_04_title_01.png",
+        "action": "fade-in-down",
+        "spoken_content": "title"
+      },
+      {
+        "time": 58.13,
+        "layer": "slide_04_illustration_01.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 60.3,
+        "layer": "slide_04_illustration_02.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 62.46,
+        "layer": "slide_04_illustration_03.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 64.63,
+        "layer": "slide_04_text_block_01.png",
+        "action": "fade-in-up",
+        "spoken_content": "text_block"
+      },
+      {
+        "time": 66.79,
+        "layer": "slide_04_illustration_04.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 68.96,
+        "layer": "slide_04_text_block_02.png",
+        "action": "fade-in-up",
+        "spoken_content": "text_block"
+      }
+    ]
+  },
+  "slide_05": {
+    "voiceover_file": "audio/slide_05_voiceover.mp3",
+    "start": 73.37,
+    "end": 93.29,
+    "script": "Workflow automation is about completing the whole job, step by step, with almost no human intervention until final quality control. Instead of copying text or manually pasting between tools, the system handles a structured flow from input to output. That is how complex, multi-stage work becomes repeatable.",
+    "cues": [
+      {
+        "time": 73.82,
+        "layer": "slide_05_title_01.png",
+        "action": "fade-in-down",
+        "spoken_content": "title"
+      },
+      {
+        "time": 75.59,
+        "layer": "slide_05_illustration_01.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 77.36,
+        "layer": "slide_05_chart_01.png",
+        "action": "draw-in",
+        "spoken_content": "chart"
+      },
+      {
+        "time": 79.14,
+        "layer": "slide_05_illustration_02.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 80.91,
+        "layer": "slide_05_key_point_card_01.png",
+        "action": "fade-in-up",
+        "spoken_content": "key_point_card"
+      },
+      {
+        "time": 82.68,
+        "layer": "slide_05_illustration_03.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 84.45,
+        "layer": "slide_05_key_point_card_02.png",
+        "action": "fade-in-up",
+        "spoken_content": "key_point_card"
+      },
+      {
+        "time": 86.22,
+        "layer": "slide_05_illustration_04.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 88.0,
+        "layer": "slide_05_key_point_card_03.png",
+        "action": "fade-in-up",
+        "spoken_content": "key_point_card"
+      },
+      {
+        "time": 89.77,
+        "layer": "slide_05_text_block_01.png",
+        "action": "fade-in-up",
+        "spoken_content": "text_block"
+      }
+    ]
+  },
+  "slide_06": {
+    "voiceover_file": "audio/slide_06_voiceover.mp3",
+    "start": 93.79,
+    "end": 114.91,
+    "script": "This slide shows a full production pipeline, from PDF to summary lines, script, storyboard, microphone, subtitles, and final review. The point is that AI can now coordinate an end-to-end process, not just generate a single answer. In practical terms, it can help create polished educational videos with far less manual glue work.",
+    "cues": [
+      {
+        "time": 94.24,
+        "layer": "slide_06_title_01.png",
+        "action": "fade-in-down",
+        "spoken_content": "title"
+      },
+      {
+        "time": 95.5,
+        "layer": "slide_06_arrow_01.png",
+        "action": "wipe-in",
+        "spoken_content": "arrow"
+      },
+      {
+        "time": 96.76,
+        "layer": "slide_06_arrow_02.png",
+        "action": "wipe-in",
+        "spoken_content": "arrow"
+      },
+      {
+        "time": 98.02,
+        "layer": "slide_06_arrow_03.png",
+        "action": "wipe-in",
+        "spoken_content": "arrow"
+      },
+      {
+        "time": 99.29,
+        "layer": "slide_06_icon_01.png",
+        "action": "pop-in",
+        "spoken_content": "icon"
+      },
+      {
+        "time": 100.55,
+        "layer": "slide_06_illustration_01.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 101.81,
+        "layer": "slide_06_illustration_02.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 103.07,
+        "layer": "slide_06_illustration_03.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 104.33,
+        "layer": "slide_06_illustration_04.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 105.59,
+        "layer": "slide_06_illustration_05.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 106.85,
+        "layer": "slide_06_icon_02.png",
+        "action": "pop-in",
+        "spoken_content": "icon"
+      },
+      {
+        "time": 108.11,
+        "layer": "slide_06_arrow_04.png",
+        "action": "wipe-in",
+        "spoken_content": "arrow"
+      },
+      {
+        "time": 109.38,
+        "layer": "slide_06_illustration_06.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 110.64,
+        "layer": "slide_06_arrow_05.png",
+        "action": "wipe-in",
+        "spoken_content": "arrow"
+      },
+      {
+        "time": 111.9,
+        "layer": "slide_06_illustration_07.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      }
+    ]
+  },
+  "slide_07": {
+    "voiceover_file": "audio/slide_07_voiceover.mp3",
+    "start": 115.41,
+    "end": 132.88,
+    "script": "The two paths answer different questions. Vibe coding asks, “How do I use this tool?” while workflow automation asks, “How does the entire job get done?” One changes the human role from operator to director, and the other changes the human role from user to flow designer.",
+    "cues": [
+      {
+        "time": 115.86,
+        "layer": "slide_07_title_01.png",
+        "action": "fade-in-down",
+        "spoken_content": "title"
+      },
+      {
+        "time": 118.04,
+        "layer": "slide_07_text_block_01.png",
+        "action": "fade-in-up",
+        "spoken_content": "text_block"
+      },
+      {
+        "time": 120.22,
+        "layer": "slide_07_table_01.png",
+        "action": "fade-in-up",
+        "spoken_content": "table"
+      },
+      {
+        "time": 122.4,
+        "layer": "slide_07_illustration_01.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 124.59,
+        "layer": "slide_07_illustration_02.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 126.77,
+        "layer": "slide_07_illustration_03.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 128.95,
+        "layer": "slide_07_illustration_04.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      }
+    ]
+  },
+  "slide_08": {
+    "voiceover_file": "audio/slide_08_voiceover.mp3",
+    "start": 133.38,
+    "end": 150.66,
+    "script": "The real future is not choosing between these two ideas, but combining them. Vibe coding handles the individual steps, while workflow automation structures the sequence around them. Put together, they form a true AI system that can execute, coordinate, and improve.",
+    "cues": [
+      {
+        "time": 133.83,
+        "layer": "slide_08_title_01.png",
+        "action": "fade-in-down",
+        "spoken_content": "title"
+      },
+      {
+        "time": 135.98,
+        "layer": "slide_08_illustration_01.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 138.14,
+        "layer": "slide_08_illustration_02.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 140.29,
+        "layer": "slide_08_illustration_03.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 142.45,
+        "layer": "slide_08_illustration_04.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 144.6,
+        "layer": "slide_08_illustration_05.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 146.76,
+        "layer": "slide_08_illustration_06.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      }
+    ]
+  },
+  "slide_09": {
+    "voiceover_file": "audio/slide_09_voiceover.mp3",
+    "start": 151.16,
+    "end": 173.14,
+    "script": "Building that system starts with a clear blueprint: find a real scenario, analyze the current flow, identify AI opportunities, design the interaction, design the workflow, build a prototype, test and iterate, then present and reflect. Each step makes the system more real and more usable. That is how an AI user becomes an AI workflow designer.",
+    "cues": [
+      {
+        "time": 151.61,
+        "layer": "slide_09_title_01.png",
+        "action": "fade-in-down",
+        "spoken_content": "title"
+      },
+      {
+        "time": 153.41,
+        "layer": "slide_09_key_point_card_01.png",
+        "action": "fade-in-up",
+        "spoken_content": "key_point_card"
+      },
+      {
+        "time": 155.21,
+        "layer": "slide_09_key_point_card_02.png",
+        "action": "fade-in-up",
+        "spoken_content": "key_point_card"
+      },
+      {
+        "time": 157.0,
+        "layer": "slide_09_key_point_card_03.png",
+        "action": "fade-in-up",
+        "spoken_content": "key_point_card"
+      },
+      {
+        "time": 158.8,
+        "layer": "slide_09_key_point_card_04.png",
+        "action": "fade-in-up",
+        "spoken_content": "key_point_card"
+      },
+      {
+        "time": 160.6,
+        "layer": "slide_09_key_point_card_05.png",
+        "action": "fade-in-up",
+        "spoken_content": "key_point_card"
+      },
+      {
+        "time": 162.4,
+        "layer": "slide_09_illustration_01.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 164.2,
+        "layer": "slide_09_key_point_card_06.png",
+        "action": "fade-in-up",
+        "spoken_content": "key_point_card"
+      },
+      {
+        "time": 166.0,
+        "layer": "slide_09_table_01.png",
+        "action": "fade-in-up",
+        "spoken_content": "table"
+      },
+      {
+        "time": 167.79,
+        "layer": "slide_09_key_point_card_07.png",
+        "action": "fade-in-up",
+        "spoken_content": "key_point_card"
+      },
+      {
+        "time": 169.59,
+        "layer": "slide_09_icon_01.png",
+        "action": "pop-in",
+        "spoken_content": "icon"
+      }
+    ]
+  },
+  "slide_10": {
+    "voiceover_file": "audio/slide_10_voiceover.mp3",
+    "start": 173.64,
+    "end": 193.22,
+    "script": "The next generation of work needs new core skills: professional expression, prompt design, task deconstruction, workflow design, and quality control. These are the abilities that let people steer AI with clarity and confidence. The goal is no longer just using AI well, but designing systems that work well.",
+    "cues": [
+      {
+        "time": 174.09,
+        "layer": "slide_10_title_01.png",
+        "action": "fade-in-down",
+        "spoken_content": "title"
+      },
+      {
+        "time": 176.02,
+        "layer": "slide_10_illustration_01.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 177.95,
+        "layer": "slide_10_icon_01.png",
+        "action": "pop-in",
+        "spoken_content": "icon"
+      },
+      {
+        "time": 179.88,
+        "layer": "slide_10_illustration_02.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 181.81,
+        "layer": "slide_10_illustration_03.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 183.75,
+        "layer": "slide_10_illustration_04.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 185.68,
+        "layer": "slide_10_illustration_05.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 187.61,
+        "layer": "slide_10_illustration_06.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      },
+      {
+        "time": 189.54,
+        "layer": "slide_10_illustration_07.png",
+        "action": "zoom-in",
+        "spoken_content": "illustration"
+      }
+    ]
+  }
+}

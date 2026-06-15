@@ -11,7 +11,7 @@
    在這個專案裡會自動生效。若想在「其他專案」也能用，把它複製回 C 槽：
 
    ```powershell
-   Copy-Item -Recurse "D:\AI Class ChenYu\AIClass\hw99\.claude\skills\pptx-to-animated-video" "$env:USERPROFILE\.claude\skills\"
+   Copy-Item -Recurse "D:\AI Class ChenYu\AIClass\hw99\.claude\skills\skill-pptx-to-animated-video" "$env:USERPROFILE\.claude\skills\"
    ```
 
 3. **還原長期記憶**（讓 Claude 記得切圖規則和專案脈絡）：

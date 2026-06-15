@@ -3,7 +3,7 @@
 期間：2026-06-12 ~ 2026-06-13（三個 Claude Code session）
 專案：`HW99/`（NotebookLM 圖片型 PPTX）、`HW99/writing-os/`（The A-Z Writing OS PDF）
 最終產出：
-- 可重用的 Claude Code skill：`.claude/skills/pptx-to-animated-video/`
+- 可重用的 Claude Code skill：`.claude/skills/skill-pptx-to-animated-video/`
 - 兩支動畫旁白 MP4（無字幕版 / 燒錄字幕版，writing-os 子專案）
 - 完整 segmentation + 旁白 + 字幕 + HyperFrames 預覽 pipeline
 
@@ -36,7 +36,7 @@
 - slide 05、15、18：小面積 fragment 折回卡片，不獨立成 layer。
 
 ### Skill 化
-- 將整套流程包成 `.claude/skills/pptx-to-animated-video/`，描述 + 7 個 workflow 步驟 + segmentation 品質規則。
+- 將整套流程包成 `.claude/skills/skill-pptx-to-animated-video/`，描述 + 7 個 workflow 步驟 + segmentation 品質規則。
 - 推到 GitHub `ChenYuHsu413/HW99`。
 
 ---
@@ -44,7 +44,7 @@
 ## 3. Session 2 — Skill 首次跨專案使用（writing-os）
 
 ### 主要進展
-- 在 `writing-os/` 子資料夾使用 `/pptx-to-animated-video` skill 處理「The A-Z Writing OS.pdf」（13 頁）。
+- 在 `writing-os/` 子資料夾使用 `/skill-pptx-to-animated-video` skill 處理「The A-Z Writing OS.pdf」（13 頁）。
 - 自動產生：13 頁切圖、繁中旁白稿、TTS MP3、subtitle、HyperFrames 預覽、兩支 MP4。
 
 ### 演算法回授
@@ -121,7 +121,7 @@ User 一開始就強調：「I want to develop a skill, not just only for these 
 
 ### 4.6 Skill 同步更新
 
-`.claude/skills/pptx-to-animated-video/` 收到本日所有改動：
+`.claude/skills/skill-pptx-to-animated-video/` 收到本日所有改動：
 
 - **`SKILL.md`** 新增 / 改寫：
   - Step 3 TTS：`+38%` 1.5× 加速指引、`node_modules` junction 解法。

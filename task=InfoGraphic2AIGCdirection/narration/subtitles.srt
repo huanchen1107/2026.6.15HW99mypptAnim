@@ -1,0 +1,39 @@
+1
+00:00:00,000 --> 00:00:17,220
+We are moving from narrow AI to general AI, and that changes how we think about work itself. In this deck, you will see two complementary paths: vibe coding and workflow automation. Together, they point toward a future where humans guide systems, not just operate tools.
+
+2
+00:00:18,070 --> 00:00:35,980
+The old model was a single task: you asked, you executed, and you repeated. The new model is a loop of understanding, decomposing, using tools, checking results, and finishing the job. That shift is what makes AI useful for real work, not just isolated prompts.
+
+3
+00:00:36,830 --> 00:00:54,670
+Vibe coding replaces manual coding and interface tweaking with natural language instructions. Instead of editing every detail yourself, you describe the intent and let AI translate that intent into execution. This makes the operator more like a creative director than a hands-on mechanic.
+
+4
+00:00:55,520 --> 00:01:12,520
+On the left, the traditional operator is trapped inside a messy, fixed environment. On the right, the director shapes the outcome by guiding design, programming, content, and analysis. The key change is not just speed, but a new kind of control over the work.
+
+5
+00:01:13,370 --> 00:01:32,940
+Workflow automation is about completing the whole job, step by step, with almost no human intervention until final quality control. Instead of copying text or manually pasting between tools, the system handles a structured flow from input to output. That is how complex, multi-stage work becomes repeatable.
+
+6
+00:01:33,790 --> 00:01:54,560
+This slide shows a full production pipeline, from PDF to summary lines, script, storyboard, microphone, subtitles, and final review. The point is that AI can now coordinate an end-to-end process, not just generate a single answer. In practical terms, it can help create polished educational videos with far less manual glue work.
+
+7
+00:01:55,410 --> 00:02:12,530
+The two paths answer different questions. Vibe coding asks, “How do I use this tool?” while workflow automation asks, “How does the entire job get done?” One changes the human role from operator to director, and the other changes the human role from user to flow designer.
+
+8
+00:02:13,380 --> 00:02:30,310
+The real future is not choosing between these two ideas, but combining them. Vibe coding handles the individual steps, while workflow automation structures the sequence around them. Put together, they form a true AI system that can execute, coordinate, and improve.
+
+9
+00:02:31,160 --> 00:02:52,790
+Building that system starts with a clear blueprint: find a real scenario, analyze the current flow, identify AI opportunities, design the interaction, design the workflow, build a prototype, test and iterate, then present and reflect. Each step makes the system more real and more usable. That is how an AI user becomes an AI workflow designer.
+
+10
+00:02:53,640 --> 00:03:12,870
+The next generation of work needs new core skills: professional expression, prompt design, task deconstruction, workflow design, and quality control. These are the abilities that let people steer AI with clarity and confidence. The goal is no longer just using AI well, but designing systems that work well.

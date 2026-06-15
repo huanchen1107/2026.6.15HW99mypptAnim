@@ -1,0 +1,99 @@
+{
+  "slide": 8,
+  "width": 1920,
+  "height": 1080,
+  "duration": 17.28,
+  "layers": [
+    {
+      "name": "slide_08_title_01.png",
+      "type": "title",
+      "x": 232,
+      "y": 83,
+      "width": 1453,
+      "height": 104,
+      "z_index": 5,
+      "animation": "fade-in-down",
+      "start": 0.45,
+      "duration": 0.7,
+      "narration_cue": "title"
+    },
+    {
+      "name": "slide_08_illustration_01.png",
+      "type": "illustration",
+      "x": 59,
+      "y": 300,
+      "width": 463,
+      "height": 461,
+      "z_index": 6,
+      "animation": "zoom-in",
+      "start": 2.6,
+      "duration": 0.7,
+      "narration_cue": "illustration"
+    },
+    {
+      "name": "slide_08_illustration_02.png",
+      "type": "illustration",
+      "x": 551,
+      "y": 456,
+      "width": 762,
+      "height": 205,
+      "z_index": 7,
+      "animation": "zoom-in",
+      "start": 4.76,
+      "duration": 0.7,
+      "narration_cue": "illustration"
+    },
+    {
+      "name": "slide_08_illustration_03.png",
+      "type": "illustration",
+      "x": 1315,
+      "y": 230,
+      "width": 593,
+      "height": 608,
+      "z_index": 8,
+      "animation": "zoom-in",
+      "start": 6.91,
+      "duration": 0.7,
+      "narration_cue": "illustration"
+    },
+    {
+      "name": "slide_08_illustration_04.png",
+      "type": "illustration",
+      "x": 110,
+      "y": 802,
+      "width": 373,
+      "height": 186,
+      "z_index": 9,
+      "animation": "zoom-in",
+      "start": 9.07,
+      "duration": 0.7,
+      "narration_cue": "illustration"
+    },
+    {
+      "name": "slide_08_illustration_05.png",
+      "type": "illustration",
+      "x": 699,
+      "y": 802,
+      "width": 491,
+      "height": 186,
+      "z_index": 10,
+      "animation": "zoom-in",
+      "start": 11.22,
+      "duration": 0.7,
+      "narration_cue": "illustration"
+    },
+    {
+      "name": "slide_08_illustration_06.png",
+      "type": "illustration",
+      "x": 1409,
+      "y": 846,
+      "width": 414,
+      "height": 134,
+      "z_index": 11,
+      "animation": "zoom-in",
+      "start": 13.38,
+      "duration": 0.7,
+      "narration_cue": "illustration"
+    }
+  ]
+}
