@@ -128,12 +128,12 @@ def draw_chips(frame, slide_num, t, timing):
     if not active:
         return
     # Bottom-center stack, wrapping to two rows when needed.
-    max_w = 1820
-    pad_x, pad_y = 20, 12
-    gap = 14
+    max_w = 1640
+    pad_x, pad_y = 28, 16
+    gap = 18
     font = cv2.FONT_HERSHEY_SIMPLEX
-    font_scale = 0.8
-    thickness = 2
+    font_scale = 1.05
+    thickness = 3
     metrics = []
     for text, alpha in active:
         (tw, th), baseline = cv2.getTextSize(text, font, font_scale, thickness)
@@ -153,23 +153,23 @@ def draw_chips(frame, slide_num, t, timing):
     if cur:
         rows.append(cur)
     total_h = sum(max(i[3] for i in row) for row in rows) + gap * (len(rows) - 1)
-    y = HEIGHT - 165 - total_h
+    y = HEIGHT - 185 - total_h
     for row in rows:
         row_h = max(i[3] for i in row)
         row_w = sum(i[2] for i in row) + gap * (len(row) - 1)
         x = (WIDTH - row_w) // 2
         for text, alpha, w, h, baseline in row:
             overlay = frame.copy()
-            color = (68, 64, 18)
-            fill = (250, 230, 120)
+            color = (72, 58, 16)
+            fill = (252, 231, 120)
             rect = (x, y, x + w, y + h)
             cv2.rectangle(overlay, (rect[0], rect[1]), (rect[2], rect[3]), fill, -1, cv2.LINE_AA)
-            cv2.rectangle(overlay, (rect[0], rect[1]), (rect[2], rect[3]), color, 2, cv2.LINE_AA)
-            radius = 14
+            cv2.rectangle(overlay, (rect[0], rect[1]), (rect[2], rect[3]), color, 3, cv2.LINE_AA)
+            radius = 18
             for cx, cy in [(rect[0] + radius, rect[1] + radius), (rect[2] - radius, rect[1] + radius), (rect[0] + radius, rect[3] - radius), (rect[2] - radius, rect[3] - radius)]:
                 cv2.circle(overlay, (cx, cy), radius, fill, -1, cv2.LINE_AA)
             tx = x + pad_x
-            ty = y + pad_y + h - baseline - 6
+            ty = y + pad_y + h - baseline - 8
             cv2.putText(overlay, text, (tx, ty), font, font_scale, (30, 30, 30), thickness, cv2.LINE_AA)
             cv2.addWeighted(overlay, alpha * 0.95, frame, 1 - alpha * 0.95, 0, frame)
             x += w + gap
