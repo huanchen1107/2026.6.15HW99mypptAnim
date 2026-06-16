@@ -5,7 +5,7 @@ const slideSelect = document.getElementById('slideSelect');
 const progress = document.getElementById('progress').querySelector('.fill');
 
 const pad = n => String(n).padStart(2, '0');
-const root = '.';
+const root = '..';
 let project = null;
 let timing = null;
 let currentSlide = null;
