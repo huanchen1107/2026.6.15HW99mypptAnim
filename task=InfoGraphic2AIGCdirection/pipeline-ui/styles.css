@@ -548,12 +548,19 @@ audio { width: 100%; }
   resize: vertical;
 }
 
-.layers-card { min-height: 0; }
+.layers-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
 .layer-list {
   display: grid;
   gap: 8px;
   overflow: auto;
   padding-right: 4px;
+  min-height: 0;
+  flex: 1;
 }
 
 .layer-item {
