@@ -78,8 +78,16 @@ function renderSlide(){
   const layers=meta.layers||[],skipped=layers.filter(l=>l.type==='key_point_card').length;
   slideLabel.textContent=sk(s.slide);slideTitleEl.textContent=`${layers.length} layers, ${skipped} skipped`;
   renderStats(s,layers);renderNarration(tim);renderPreview(s,layers);renderTimeline(s,meta,tim);renderLayers(s,meta);
-  notesEl.value='';
+  const nk = `notes-${S.taskPath}-${sk(s.slide)}`;
+  notesEl.value = localStorage.getItem(nk)||'';
 }
+
+// ── Save notes ──────────────────────────────────────────────────────
+notesEl.addEventListener('input',()=>{
+  const nk = `notes-${S.taskPath}-${sk(S.selected.slide)}`;
+  localStorage.setItem(nk, notesEl.value);
+  fetch('/apply',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({[sk(S.selected.slide)]:{notes:notesEl.value}})}).catch(()=>{});
+});
 
 function renderStats(s,layers){statsEl.innerHTML=`<dt>Canvas</dt><dd>${s.width}&times;${s.height}</dd><dt>Duration</dt><dd>${fmt(s.duration)}s</dd><dt>Layers</dt><dd>${layers.length}</dd>`;}
 
