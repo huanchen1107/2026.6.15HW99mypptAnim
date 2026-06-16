@@ -161,6 +161,7 @@ button, input { font: inherit; }
 
 .sidebar, .viewer, .inspector {
   min-height: 0;
+  overflow: auto;
 }
 
 .sidebar, .card, .preview-card, .timeline-panel, .suggestions-panel {
@@ -170,7 +171,6 @@ button, input { font: inherit; }
 }
 
 .sidebar {
-  overflow: hidden;
   padding: 14px;
 }
 
@@ -186,7 +186,6 @@ button, input { font: inherit; }
 .slide-list {
   display: grid;
   gap: 8px;
-  max-height: calc(100vh - 150px);
   overflow: auto;
   padding-right: 4px;
 }
@@ -212,7 +211,7 @@ button, input { font: inherit; }
 
 .viewer {
   display: grid;
-  grid-template-rows: auto auto minmax(300px, 1fr) 180px;
+  grid-template-rows: auto auto 1fr auto auto;
   gap: 12px;
   min-width: 0;
 }
@@ -294,7 +293,8 @@ button, input { font: inherit; }
 
 .stage-preview {
   position: relative;
-  width: min(100%, calc((100vh - 360px) * 16 / 9));
+  width: 100%;
+  max-width: 100%;
   aspect-ratio: 16 / 9;
   overflow: hidden;
   border: 1px solid #223044;
@@ -374,7 +374,6 @@ button, input { font: inherit; }
 .timeline {
   display: grid;
   gap: 7px;
-  max-height: 130px;
   overflow: auto;
 }
 
@@ -522,10 +521,23 @@ button, input { font: inherit; }
 
 audio { width: 100%; }
 
+.notes-section {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+  background: var(--panel);
+}
+.notes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.notes-header .panel-title { margin-bottom: 0; }
 .notes-input {
   width: 100%;
   min-height: 54px;
-  max-height: 100px;
+  max-height: 120px;
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 6px 10px;
@@ -540,7 +552,6 @@ audio { width: 100%; }
 .layer-list {
   display: grid;
   gap: 8px;
-  max-height: calc(100vh - 540px);
   overflow: auto;
   padding-right: 4px;
 }

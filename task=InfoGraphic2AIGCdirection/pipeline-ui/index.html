@@ -67,6 +67,13 @@
         <img id="assetPreview" class="asset-preview" alt="Selected pipeline asset">
       </div>
 
+      <section class="notes-section">
+        <div class="notes-header">
+          <span class="panel-title">Adjustment notes</span>
+        </div>
+        <textarea id="adjustmentNotes" class="notes-input" placeholder="e.g. merge text blocks, change animation order, slow down this slide…"></textarea>
+      </section>
+
       <section class="suggestions-panel" id="suggestionsPanel" hidden>
         <div class="suggestions-header">
           <span class="panel-title">Suggestions</span>
@@ -93,18 +100,9 @@
         <audio id="audioPlayer" controls></audio>
       </section>
 
-      <section class="card">
-        <div class="panel-title">Adjustment notes</div>
-        <textarea id="adjustmentNotes" class="notes-input" placeholder="e.g. merge text blocks, change animation order, slow down this slide…"></textarea>
-      </section>
-
       <section class="card layers-card">
         <div class="panel-title">Layers</div>
         <div id="layerList" class="layer-list"></div>
-      </section>
-      <section class="card log-card">
-        <div class="panel-title">Pipeline log</div>
-        <pre id="pipelineLog" class="log-output">Apply edits and click "Apply to pipeline" to execute.</pre>
       </section>
     </aside>
   </main>
