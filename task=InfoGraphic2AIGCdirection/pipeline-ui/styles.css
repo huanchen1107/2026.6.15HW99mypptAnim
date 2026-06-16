@@ -481,7 +481,7 @@ button, input { font: inherit; }
 
 .inspector {
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-rows: auto auto auto 1fr;
   gap: 12px;
   overflow: hidden;
 }
@@ -524,10 +524,11 @@ audio { width: 100%; }
 
 .notes-input {
   width: 100%;
-  min-height: 70px;
+  min-height: 54px;
+  max-height: 100px;
   border: 1px solid var(--line);
   border-radius: 10px;
-  padding: 8px 10px;
+  padding: 6px 10px;
   color: var(--text);
   background: var(--panel-2);
   font-size: 13px;
@@ -539,7 +540,7 @@ audio { width: 100%; }
 .layer-list {
   display: grid;
   gap: 8px;
-  max-height: calc(100vh - 445px);
+  max-height: calc(100vh - 540px);
   overflow: auto;
   padding-right: 4px;
 }
