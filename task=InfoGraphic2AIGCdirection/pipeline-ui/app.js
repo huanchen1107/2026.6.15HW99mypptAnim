@@ -1,118 +1,185 @@
-const slideEl = document.getElementById('slide');
-const caption = document.getElementById('caption');
-const playBtn = document.getElementById('playBtn');
-const slideSelect = document.getElementById('slideSelect');
-const progress = document.getElementById('progress').querySelector('.fill');
+const pad = n => String(n).padStart(2, '0'), fmt = v => Number(v??0).toFixed(2), sk = n => `slide_${pad(n)}`;
 
-if (!slideEl) document.body.innerHTML = '<div style="color:#fff;padding:40px">Error: #slide not found</div>';
+// DOM
+const taskSelect = document.getElementById('taskSelect'), themeSelect = document.getElementById('themeSelect'),
+  taskTitle = document.getElementById('taskTitle'), statusEl = document.getElementById('status'),
+  slideList = document.getElementById('slideList'), slideLabel = document.getElementById('slideLabel'),
+  slideTitleEl = document.getElementById('slideTitle'), showSkipped = document.getElementById('showSkipped'),
+  preview = document.getElementById('preview'), assetPreview = document.getElementById('assetPreview'),
+  playBtn = document.getElementById('playBtn'), hfBtn = document.getElementById('hfBtn'),
+  timelineEl = document.getElementById('timeline'), statsEl = document.getElementById('stats'),
+  narrationEl = document.getElementById('narration'), audioEl = document.getElementById('audio'),
+  layerList = document.getElementById('layerList');
 
-const pad = n => String(n).padStart(2, '0');
-const root = '..';
-let project = null;
-let timing = null;
-let currentSlide = null;
-let timers = [];
-let playing = false;
+// State
+const S = { tasks:[], taskPath:null, project:null, timing:null, slides:[], meta:new Map,
+  subMap:{}, selected:null, view:'composite', showSkipped:false, playing:false, timers:[] };
+
+const root = new URL('../../', window.location.href).href;
+function tRoot(p) { return new URL(`${p}/`, root).href; }
+
+async function fj(path) { const r = await fetch(path); if(!r.ok) throw Error(`${r.status}`); return r.json(); }
+
+// ── Load ────────────────────────────────────────────────────────────
+async function loadTask(tp) {
+  const r = tRoot(tp);
+  const [proj, tim] = await Promise.all([fj(`${r}hyperframes/project.json`), fj(`${r}narration/narration_timing.json`)]);
+  S.taskPath = tp; S.project = proj; S.timing = tim; S.slides = proj.slides||[]; S.meta = new Map;
+  await Promise.all(S.slides.map(async s => { S.meta.set(s.slide, await fj(`${r}output/${sk(s.slide)}/metadata.json`)); }));
+
+  // Parse SRT
+  S.subMap = {};
+  try {
+    const srt = await (await fetch(`${r}narration/subtitles.srt`)).text();
+    const cues = [];
+    for(const b of srt.split(/\n\n+/)) {
+      const ln = b.trim().split('\n'); if(ln.length<3) continue;
+      const m = ln[1].match(/([\d:,]+)\s*-->\s*([\d:,]+)/); if(!m) continue;
+      const pt = t => { const p=t.split(/[:,]/).map(Number); return p[0]*3600+p[1]*60+p[2]+p[3]/1000; };
+      cues.push({start:pt(m[1]), end:pt(m[2]), text:ln.slice(2).join('\n')});
+    }
+    let ci=0;
+    for(const s of S.slides) {
+      const k = sk(s.slide), ss = S.timing[k]?.start??0, se = S.timing[k]?.end??999;
+      const cs = [];
+      while(ci<cues.length && cues[ci].end <= se+.1) {
+        const c = cues[ci]; cs.push({start:c.start-ss, end:c.end-ss, text:c.text}); ci++;
+      }
+      S.subMap[k] = cs;
+    }
+  } catch(_){}
+
+  renderSlideList(); selectSlide(S.slides[0]?.slide);
+  statusEl.textContent = `${S.slides.length} slides loaded.`;
+}
 
 async function init() {
   try {
-    project = await (await fetch(`${root}/hyperframes/project.json`)).json();
-    timing = await (await fetch(`${root}/narration/narration_timing.json`)).json();
-    project.slides.forEach(s => {
-      const opt = document.createElement('option');
-      opt.value = s.slide;
-      opt.textContent = `Slide ${pad(s.slide)}`;
-      slideSelect.appendChild(opt);
-    });
-    slideSelect.addEventListener('change', () => showSlide(Number(slideSelect.value)));
-    showSlide(project.slides[0].slide);
-  } catch(e) {
-    document.body.innerHTML = `<div style="color:#fb7185;padding:40px;font-size:16px">⚠️ ${e.message}<br><br>Make sure the server is running from the project root.</div>`;
-    console.error(e);
+    S.tasks = await fj(`${root}task-index.json`);
+    setTasks(S.tasks);
+    const cur = S.tasks.find(t => window.location.pathname.includes(t.path));
+    await loadTask(cur?.path || S.tasks[0].path);
+  } catch(e) { document.body.innerHTML=`<div style="color:#fb7185;padding:40px">⚠ ${e.message}</div>`; }
+}
+
+function setTasks(ts) {
+  taskSelect.innerHTML = '';
+  ts.forEach(t => { const o = document.createElement('option'); o.value=t.path; o.textContent=t.label||t.path; taskSelect.appendChild(o); });
+}
+
+function currentTask() { return S.tasks.find(t => window.location.pathname.includes(t.path))?.path || S.tasks[0]?.path; }
+
+// ── Slides ──────────────────────────────────────────────────────────
+function renderSlideList() {
+  slideList.innerHTML = '';
+  for(const s of S.slides) {
+    const meta = S.meta.get(s.slide)||s, tim = S.timing[sk(s.slide)]||{};
+    const btn = document.createElement('button'); btn.className='slide-btn'; btn.innerHTML=`<strong>Slide ${pad(s.slide)}</strong><span>${fmt(s.duration)}s · ${meta.layers.length} layers</span>`;
+    btn.addEventListener('click',()=>selectSlide(s.slide)); slideList.appendChild(btn);
   }
 }
 
-function showSlide(num) {
-  stop();
-  currentSlide = project.slides.find(s => s.slide === num);
-  if (!currentSlide) return;
-  slideEl.innerHTML = '';
+function selectSlide(n) {
+  const s = S.slides.find(x=>x.slide===n); if(!s) return;
+  stopPlay(); S.selected = s;
+  document.querySelectorAll('.slide-btn').forEach(b=>b.classList.toggle('active', b.textContent.includes(`Slide ${pad(n)}`)));
+  renderSlide();
+}
 
-  const key = `slide_${pad(num)}`;
-  const bg = document.createElement('img');
-  bg.className = 'bg';
-  bg.src = `${root}/output/${key}/background.png`;
-  slideEl.appendChild(bg);
+function renderSlide() {
+  const s = S.selected, meta = S.meta.get(s.slide)||s, tim = S.timing[sk(s.slide)]||{};
+  const layers = meta.layers||[], skipped = layers.filter(l=>l.type==='key_point_card').length;
+  slideLabel.textContent = sk(s.slide);
+  slideTitleEl.textContent = `${layers.length} layers, ${skipped} skipped`;
+  renderStats(s,layers); renderNarration(tim); renderPreview(s,layers); renderTimeline(s,meta,tim); renderLayers(s,meta);
+}
 
-  for (const l of currentSlide.layers) {
+function renderStats(s,layers) {
+  statsEl.innerHTML = `<dt>Canvas</dt><dd>${s.width}×${s.height}</dd><dt>Duration</dt><dd>${fmt(s.duration)}s</dd><dt>Layers</dt><dd>${layers.length}</dd>`;
+}
+
+function renderNarration(tim) {
+  narrationEl.textContent = tim.script||'No narration.';
+  if(tim.voiceover_file) { audioEl.src = `${tRoot(S.taskPath)}${tim.voiceover_file}`; audioEl.hidden=false; }
+  else { audioEl.removeAttribute('src'); audioEl.hidden=true; }
+}
+
+function renderPreview(s, layers) {
+  const rt = tRoot(S.taskPath), key = sk(s.slide);
+  const map = { original:`${rt}output/${key}/original.png`, background:`${rt}output/${key}/background.png`, debug:`${rt}work_preview/element_debug/${key}_debug.jpg`, gallery:`${rt}work_preview/${key}_layer_gallery.jpg` };
+  if(S.view!=='composite') { preview.style.display='none'; assetPreview.style.display='block'; assetPreview.src=map[S.view]; return; }
+  assetPreview.style.display='none'; preview.style.display='block'; preview.innerHTML='';
+  const bg = document.createElement('img'); bg.className='bg'; bg.src=`${rt}output/${key}/background.png`; preview.appendChild(bg);
+  const sub = document.createElement('div'); sub.className='sub-overlay'; sub.id='subOverlay'; preview.appendChild(sub);
+  for(const l of layers) {
     const img = document.createElement('img');
-    img.className = `layer ${l.animation}`;
-    img.dataset.start = l.start;
-    img.style.setProperty('--d', `${l.duration}s`);
-    img.style.left = `${l.x / currentSlide.width * 100}%`;
-    img.style.top = `${l.y / currentSlide.height * 100}%`;
-    img.style.width = `${l.width / currentSlide.width * 100}%`;
-    img.style.height = `${l.height / currentSlide.height * 100}%`;
-    img.style.zIndex = l.z_index;
-    img.src = `${root}/output/${key}/${l.name}`;
-    slideEl.appendChild(img);
+    img.className = `layer ${l.animation}${l.type==='key_point_card'?' skipped':''}`;
+    img.dataset.start = l.start; img.style.setProperty('--d',`${l.duration}s`);
+    img.style.left=`${l.x/s.width*100}%`; img.style.top=`${l.y/s.height*100}%`;
+    img.style.width=`${l.width/s.width*100}%`; img.style.height=`${l.height/s.height*100}%`;
+    img.style.zIndex=l.z_index; img.src=`${rt}output/${key}/${l.name}`;
+    img.addEventListener('click',()=>selectLayer(l.name));
+    preview.appendChild(img);
   }
 }
 
-playBtn.addEventListener('click', () => {
-  if (playing) { stop(); return; }
-  if (!currentSlide) return;
-  playing = true;
-  slideEl.classList.add('playing');
-  playBtn.classList.add('playing');
-  playBtn.textContent = 'Stop';
-  progress.style.width = '0%';
-
-  const key = `slide_${pad(currentSlide.slide)}`;
-  const dur = currentSlide.duration;
-  const layers = Array.from(slideEl.querySelectorAll('.layer'));
-  timers = [];
-
-  // Layer reveals
-  layers.forEach(el => {
-    const start = parseFloat(el.dataset.start);
-    const t = setTimeout(() => el.classList.add('show'), start * 1000);
-    timers.push(t);
-  });
-
-  // Audio
-  const tInfo = timing[key];
-  if (tInfo?.voiceover_file) {
-    const audio = new Audio(`${root}/${tInfo.voiceover_file}`);
-    audio.play().catch(() => {});
-    timers.push(setTimeout(() => audio.pause(), dur * 1000 + 1000));
+function renderTimeline(s, meta, tim) {
+  const layers = meta.layers||[], dur = Math.max(s.duration,.1), cueMap = new Map((tim.cues||[]).map(c=>[c.layer,c]));
+  timelineEl.innerHTML='';
+  for(const l of layers) {
+    const sp = Math.max(0,Math.min(100,l.start/dur*100)), wp = Math.max(.5,Math.min(100-sp,l.duration/dur*100));
+    const cue = cueMap.get(l.name), cp = cue?Math.max(0,Math.min(100,(cue.time-tim.start)/dur*100)):null;
+    const row = document.createElement('div'); row.className='timeline-row';
+    row.innerHTML = `<span>${l.type}</span><div class="track"><span class="bar${l.type==='key_point_card'?' skipped':''}" style="left:${sp}%;width:${wp}%"></span>${cp===null?'':`<span class="cue-dot" style="left:${cp}%"></span>`}</div><span>${fmt(l.start)}s</span>`;
+    timelineEl.appendChild(row);
   }
+}
 
-  // Progress bar
-  const startTime = Date.now();
-  const progInterval = setInterval(() => {
-    const pct = Math.min(100, (Date.now() - startTime) / (dur * 1000) * 100);
-    progress.style.width = `${pct}%`;
-    if (pct >= 100) clearInterval(progInterval);
-  }, 100);
-  timers.push(setInterval(() => {}, 0)); // dummy so timers array tracks it
-  timers.push(() => clearInterval(progInterval));
+function renderLayers(s, meta) {
+  layerList.innerHTML='';
+  for(const l of meta.layers||[]) {
+    const item = document.createElement('div'); item.className='layer-item'; item.dataset.layer=l.name;
+    item.innerHTML = `<div class="layer-name">${l.name}</div><span class="pill">${l.type}</span><div class="layer-meta"><span>${fmt(l.start)}s</span><span>${fmt(l.duration)}s</span><span>${l.animation}</span><span>z${l.z_index}</span><span>${l.x},${l.y}</span><span>${l.width}×${l.height}</span></div>`;
+    item.addEventListener('click',()=>selectLayer(l.name));
+    layerList.appendChild(item);
+  }
+}
 
-  // Auto-stop
-  const endTimer = setTimeout(() => stop(), dur * 1000 + 500);
-  timers.push(endTimer);
+function selectLayer(name) {
+  document.querySelectorAll('.layer-item').forEach(e=>e.classList.toggle('active',e.dataset.layer===name));
+  document.querySelectorAll('.stage-preview .layer').forEach(e=>e.style.outline = e.dataset?.start!==undefined && e.className.includes(name.split('.')[1]||'') ? '3px solid var(--accent2)':'');
+}
+
+// ── Play ────────────────────────────────────────────────────────────
+function stopPlay() { S.timers.forEach(clearTimeout); S.timers=[]; preview.classList.remove('playing');
+  document.querySelectorAll('.stage-preview .layer').forEach(e=>e.classList.remove('show'));
+  const s = document.getElementById('subOverlay'); if(s) s.classList.remove('show');
+  playBtn.textContent='▶ Play slide'; playBtn.classList.remove('playing'); S.playing=false; }
+
+playBtn.addEventListener('click',()=>{
+  if(S.playing) { stopPlay(); return; }
+  const s = S.selected; if(!s) return;
+  stopPlay(); S.playing=true; preview.classList.add('playing'); playBtn.textContent='■ Stop'; playBtn.classList.add('playing');
+  const layers = Array.from(document.querySelectorAll('.stage-preview .layer'));
+  layers.forEach(el=>{ const t=setTimeout(()=>el.classList.add('show'), parseFloat(el.dataset.start)*1000); S.timers.push(t); });
+  // Subtitles
+  const cues = S.subMap[sk(s.slide)]||[], sub = document.getElementById('subOverlay');
+  cues.forEach(c=>{ S.timers.push(setTimeout(()=>{if(sub){sub.textContent=c.text;sub.classList.add('show')}},c.start*1000)); S.timers.push(setTimeout(()=>{if(sub)sub.classList.remove('show')},c.end*1000)); });
+  const tim = S.timing[sk(s.slide)];
+  if(tim?.voiceover_file) { audioEl.currentTime=0; audioEl.play().catch(()=>{}); }
+  S.timers.push(setTimeout(()=>stopPlay(), s.duration*1000+500));
 });
 
-function stop() {
-  playing = false;
-  timers.forEach(t => clearTimeout(t));
-  timers = [];
-  slideEl.classList.remove('playing');
-  playBtn.classList.remove('playing');
-  playBtn.textContent = 'Play';
-  progress.style.width = '0%';
-  document.querySelectorAll('#slide .layer').forEach(el => el.classList.remove('show'));
-  caption.classList.remove('show');
-}
+// ── Tabs ────────────────────────────────────────────────────────────
+document.querySelectorAll('.asset-tab').forEach(b=>{ b.addEventListener('click',()=>{ S.view=b.dataset.view; document.querySelectorAll('.asset-tab').forEach(t=>t.classList.toggle('active',t===b)); if(S.selected) renderPreview(S.selected, (S.meta.get(S.selected.slide)||S.selected).layers||[]); }); });
+
+showSkipped.addEventListener('change',e=>{ S.showSkipped=e.target.checked; if(S.selected) renderPreview(S.selected, (S.meta.get(S.selected.slide)||S.selected).layers||[]); });
+
+// ── Task / Theme ────────────────────────────────────────────────────
+taskSelect.addEventListener('change',async e=>{ taskSelect.disabled=true; await loadTask(e.target.value); taskSelect.disabled=false; });
+const saved = localStorage.getItem('pui-theme')||'dark'; document.documentElement.className=`theme-${saved}`; themeSelect.value=saved;
+themeSelect.addEventListener('change',()=>{ const t=themeSelect.value; document.documentElement.className=`theme-${t}`; localStorage.setItem('pui-theme',t); });
+
+hfBtn.addEventListener('click',()=>{ window.open(`${tRoot(S.taskPath)}hyperframes/index.html`,'_blank'); });
 
 init();
