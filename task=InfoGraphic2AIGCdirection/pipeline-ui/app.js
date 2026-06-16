@@ -154,8 +154,11 @@ async function loadTask(taskPath) {
   pipelineLog.textContent = 'Apply edits and click "Apply to pipeline" to execute.';
 
   try {
-    const saved = await fetchJson(`${root}pipeline_state.json`);
-    if (saved && typeof saved === 'object') state.overrides = saved;
+    const r = await fetch(`${root}pipeline_state.json`);
+    if (r.ok) {
+      const saved = await r.json();
+      if (saved && typeof saved === 'object') state.overrides = saved;
+    }
   } catch (_) { }
 
   renderSlideList();
