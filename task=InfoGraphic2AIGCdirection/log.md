@@ -155,3 +155,46 @@ python pipeline_server.py 8001
 # http://localhost:8000/task=InfoGraphic2AIGCdirection/pipeline-ui/
 # 編輯 → Save overrides → Apply to pipeline
 ```
+
+---
+
+## 2026-06-16：Session Summary — 完整工作記錄
+
+### 環境與技能
+- 安裝 `npx skills add heygen-com/hyperframes`（16 個 skills）
+- 安裝 Python 依賴（opencv-python, edge-tts, pymupdf, pillow）
+- 確認 ffmpeg 可用
+
+### 旁白與 TTS
+- 旁白稿從純英文改為**中英混用**版（技術關鍵字保留英文，解說用繁體中文）
+- TTS 語音從 `en-US-GuyNeural` 改為 `zh-TW-YunJheNeural`（台灣男聲，支援中英混讀）
+- 語速從 +0% 調整為 -10%（自然教學語速）
+
+### Slide 01 切圖修正
+- 將原始 title block（含 "Designing the Future of Work" + "From Narrow AI to General AI"）手動拆成兩個獨立 PNG 區塊
+- title_main.png：上半部 "Designing the Future of Work"
+- title_sub.png：下半部 "From Narrow AI to General AI"
+- 動畫順序：title fade-in-down → subtitle fade-in-up → 圖表群 zoom-in
+
+### Pipeline UI 演進
+1. **Phase I**：只讀檢視器 — slide list、composite preview、layer list、narration、timeline
+2. **中間進化**：task 下拉選單（支援所有 task=*）、主題切換（Dark/Light/Slate/Warm）
+3. **Phase II**：可編輯 UI — narration 可編輯、layer start/duration/animation 可調、Save overrides 下載 pipeline_state.json、Apply to pipeline 按鈕
+4. **Pipeline Server**：`pipeline_server.py` 合併靜態檔案伺服 + API（POST /apply、POST /suggest）、自動處理調整備註（偵測關鍵字如「慢一點」→ 自動重跑 TTS）
+5. **最終版**：簡化為 slide preview + play button + slide 下拉選單（preview-ui tag）
+
+### Git 標籤
+- `editable-narration-block` — Phase II 可編輯旁白完成點
+- `preview-ui` — 最終簡化版 slide 預覽
+
+### 目前使用方式
+```bash
+cd task=InfoGraphic2AIGCdirection
+python pipeline_server.py 8000
+# 打開 http://localhost:8000/task=InfoGraphic2AIGCdirection/pipeline-ui/
+```
+
+### 已知限制
+- Adjustment notes 的 auto-processor 只支援簡單關鍵字（慢一點、快一點、換聲音等），複雜的切圖/動畫調整仍需透過 agent 對話執行
+- Slide 01 的 title 拆分使用手動 PNG 裁切方式，未整合進 segment_elements.py 的 OVERRIDES 機制
+- 部分 slides 的切圖仍可能不完全（text block 合併、collage cluster 等）
