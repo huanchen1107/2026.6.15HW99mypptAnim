@@ -123,6 +123,11 @@ def suggest_slide(slide_num):
 def apply_overrides(overrides):
     logs = []
 
+    # ── 0. Log adjustment notes ────────────────────────────────────────
+    for key, ov in overrides.items():
+        if ov.get("notes"):
+            logs.append(f"[{key}] notes: {ov['notes'][:120]}")
+
     # ── 1. Update narration_script.md ──────────────────────────────────
     nar_path = TASK / "narration" / "narration_script.md"
     if nar_path.exists():
