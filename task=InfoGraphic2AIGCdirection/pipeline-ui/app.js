@@ -30,6 +30,9 @@ const timeline = document.getElementById('timeline');
 const suggestBtn = document.getElementById('suggestBtn');
 const suggestionsPanel = document.getElementById('suggestionsPanel');
 const suggestionsList = document.getElementById('suggestionsList');
+const playBtn = document.getElementById('playBtn');
+const hyperframesBtn = document.getElementById('hyperframesBtn');
+let playTimers = [];
 const slideStats = document.getElementById('slideStats');
 const narrationText = document.getElementById('narrationText');
 const audioPlayer = document.getElementById('audioPlayer');
@@ -164,6 +167,7 @@ function renderSlideList() {
 function selectSlide(num) {
   const slide = state.slides.find(s => s.slide === num);
   if (!slide) return;
+  stopPlayback();
   state.selectedSlide = slide;
   state.selectedLayer = null;
   document.querySelectorAll('.slide-button').forEach(b => b.classList.toggle('active', Number(b.dataset.slide) === num));
@@ -262,9 +266,14 @@ function renderPreview(slide, layers) {
   compositePreview.appendChild(bg);
 
   for (const layer of layers) {
+    const lo = state.overrides[slideKey(slide.slide)]?.layers?.[layer.name] || {};
+    const anim = lo.animation || layer.animation || 'fade-in';
+    const dur = lo.duration || layer.duration || 0.7;
     const img = document.createElement('img');
-    img.className = `layer-img${isSkippedLayer(layer) ? ' skipped' : ''}`;
+    img.className = `layer-img ${anim}${isSkippedLayer(layer) ? ' skipped' : ''}`;
     img.dataset.layer = layer.name;
+    img.dataset.start = lo.start ?? layer.start;
+    img.style.setProperty('--anim-duration', `${dur}s`);
     img.src = `${rt}output/${key}/${layer.name}`;
     img.alt = '';
     img.style.left = `${layer.x / slide.width * 100}%`;
@@ -455,6 +464,7 @@ suggestBtn.addEventListener('click', async () => {
 
 document.querySelectorAll('.asset-tab').forEach(btn => {
   btn.addEventListener('click', () => {
+    stopPlayback();
     state.view = btn.dataset.view;
     document.querySelectorAll('.asset-tab').forEach(t => t.classList.toggle('active', t === btn));
     if (state.selectedSlide) renderPreview(state.selectedSlide, activeLayers(state.selectedSlide));
@@ -469,6 +479,67 @@ taskSelect.addEventListener('change', async e => {
 showSkippedLayers.addEventListener('change', e => {
   state.showSkippedLayers = e.target.checked;
   if (state.selectedSlide) renderSelectedSlide();
+});
+
+// ── Play / Reset slide animation ────────────────────────────────────
+function stopPlayback() {
+  clearTimers();
+  compositePreview.classList.remove('playing');
+  document.querySelectorAll('.stage-preview .layer-img').forEach(el => el.classList.remove('show'));
+  audioPlayer.pause();
+  audioPlayer.currentTime = 0;
+  playBtn.textContent = '▶ Play slide';
+  playBtn.classList.remove('playing');
+}
+
+playBtn.addEventListener('click', () => {
+  const slide = state.selectedSlide;
+  if (!slide) return;
+  const isPlaying = compositePreview.classList.contains('playing');
+  if (isPlaying) { stopPlayback(); return; }
+
+  // Start playback
+  clearTimers();
+  playTimers = [];
+  document.querySelectorAll('.stage-preview .layer-img').forEach(el => el.classList.remove('show'));
+
+  compositePreview.classList.add('playing');
+  playBtn.textContent = '■ Reset';
+  playBtn.classList.add('playing');
+
+  const layers = Array.from(document.querySelectorAll('.stage-preview .layer-img'));
+  layers.forEach(el => {
+    const start = parseFloat(el.dataset.start);
+    const timer = setTimeout(() => el.classList.add('show'), start * 1000);
+    playTimers.push(timer);
+  });
+
+  // Play narration audio
+  const timing = state.timing[slideKey(slide.slide)];
+  if (timing?.voiceover_file) {
+    audioPlayer.currentTime = 0;
+    audioPlayer.play().catch(() => {});
+  }
+
+  // Auto-stop at end of slide
+  const endTimer = setTimeout(() => {
+    compositePreview.classList.remove('playing');
+    playBtn.textContent = '▶ Play slide';
+    playBtn.classList.remove('playing');
+  }, slide.duration * 1000 + 500);
+  playTimers.push(endTimer);
+});
+
+function clearTimers() {
+  playTimers.forEach(clearTimeout);
+  playTimers = [];
+}
+
+hyperframesBtn.addEventListener('click', () => {
+  const path = state.taskPath
+    ? `${taskRoot(state.taskPath)}hyperframes/index.html`
+    : '../hyperframes/index.html';
+  window.open(path, '_blank');
 });
 
 // ── Theme ──────────────────────────────────────────────────────────
