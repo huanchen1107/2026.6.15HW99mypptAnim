@@ -2,41 +2,47 @@
   "slide_01": {
     "voiceover_file": "audio/slide_01_voiceover.mp3",
     "start": 0.0,
-    "end": 17.57,
+    "end": 16.8,
     "script": "我們正在從 narrow AI 走向 general AI，這從根本上改變了我們對工作的理解。這份 deck 會介紹兩條互補的路徑：vibe coding 和 workflow automation。兩者結合，指向一個人類引導系統、而不只是操作工具的未來。",
     "cues": [
       {
         "time": 0.45,
-        "layer": "slide_01_title_01.png",
+        "layer": "slide_01_title_main.png",
         "action": "fade-in-down",
         "spoken_content": "title"
       },
       {
-        "time": 3.01,
+        "time": 4.0,
         "layer": "slide_01_illustration_01.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 5.57,
+        "time": 2.0,
+        "layer": "slide_01_title_sub.png",
+        "action": "fade-in-up",
+        "spoken_content": "narrow-ai-text"
+      },
+      {
+        "time": 6.0,
         "layer": "slide_01_illustration_02.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 8.13,
+        "time": 8.0,
         "layer": "slide_01_illustration_03.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 10.7,
+        "time": 10.0,
         "layer": "slide_01_illustration_04.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 13.26,
+        "time": 12.0,
         "layer": "slide_01_illustration_05.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
@@ -45,30 +51,30 @@
   },
   "slide_02": {
     "voiceover_file": "audio/slide_02_voiceover.mp3",
-    "start": 18.07,
-    "end": 36.33,
+    "start": 17.3,
+    "end": 35.56,
     "script": "過去的模式是單一任務：你下指令、它執行、你再重複。現在的新模式是一個循環：understanding、decomposing、using tools、checking results，最後完成任務。這個轉變讓 AI 真正能被用在實際工作上，而不只是寫一些 isolated prompts。",
     "cues": [
       {
-        "time": 18.52,
+        "time": 17.75,
         "layer": "slide_02_title_01.png",
         "action": "fade-in-down",
         "spoken_content": "title"
       },
       {
-        "time": 22.54,
+        "time": 21.77,
         "layer": "slide_02_illustration_01.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 26.55,
+        "time": 25.78,
         "layer": "slide_02_illustration_02.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 30.57,
+        "time": 29.8,
         "layer": "slide_02_key_point_card_01.png",
         "action": "fade-in-up",
         "spoken_content": "key_point_card"
@@ -77,72 +83,72 @@
   },
   "slide_03": {
     "voiceover_file": "audio/slide_03_voiceover.mp3",
-    "start": 36.83,
-    "end": 55.02,
+    "start": 36.06,
+    "end": 54.25,
     "script": "Vibe coding 的核心是用自然語言取代手動編碼和介面調整。你不用自己編輯每一個細節，而是描述你的意圖，讓 AI 把意圖轉換成執行。這讓操作者更像 creative director，而不是 hands-on mechanic。",
     "cues": [
       {
-        "time": 37.28,
+        "time": 36.51,
         "layer": "slide_03_title_01.png",
         "action": "fade-in-down",
         "spoken_content": "title"
       },
       {
-        "time": 38.73,
+        "time": 37.96,
         "layer": "slide_03_icon_01.png",
         "action": "pop-in",
         "spoken_content": "icon"
       },
       {
-        "time": 40.19,
+        "time": 39.42,
         "layer": "slide_03_text_block_01.png",
         "action": "fade-in-up",
         "spoken_content": "text_block"
       },
       {
-        "time": 41.64,
+        "time": 40.87,
         "layer": "slide_03_text_block_02.png",
         "action": "fade-in-up",
         "spoken_content": "text_block"
       },
       {
-        "time": 43.09,
+        "time": 42.32,
         "layer": "slide_03_illustration_01.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 44.55,
+        "time": 43.78,
         "layer": "slide_03_illustration_02.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 46.0,
+        "time": 45.23,
         "layer": "slide_03_illustration_03.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 47.46,
+        "time": 46.69,
         "layer": "slide_03_illustration_04.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 48.91,
+        "time": 48.14,
         "layer": "slide_03_arrow_01.png",
         "action": "wipe-in",
         "spoken_content": "arrow"
       },
       {
-        "time": 50.36,
+        "time": 49.59,
         "layer": "slide_03_illustration_05.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 51.82,
+        "time": 51.05,
         "layer": "slide_03_illustration_06.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
@@ -151,48 +157,48 @@
   },
   "slide_04": {
     "voiceover_file": "audio/slide_04_voiceover.mp3",
-    "start": 55.52,
-    "end": 72.87,
+    "start": 54.75,
+    "end": 72.1,
     "script": "左邊是傳統的操作者，被困在一個雜亂、固定的環境裡。右邊是 director，透過引導 design、programming、content 和 analysis 來塑造結果。關鍵改變不只是速度，而是對工作的一種全新掌控方式。",
     "cues": [
       {
-        "time": 55.97,
+        "time": 55.2,
         "layer": "slide_04_title_01.png",
         "action": "fade-in-down",
         "spoken_content": "title"
       },
       {
-        "time": 58.13,
+        "time": 57.36,
         "layer": "slide_04_illustration_01.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 60.3,
+        "time": 59.53,
         "layer": "slide_04_illustration_02.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 62.46,
+        "time": 61.69,
         "layer": "slide_04_illustration_03.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 64.63,
+        "time": 63.86,
         "layer": "slide_04_text_block_01.png",
         "action": "fade-in-up",
         "spoken_content": "text_block"
       },
       {
-        "time": 66.79,
+        "time": 66.02,
         "layer": "slide_04_illustration_04.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 68.96,
+        "time": 68.19,
         "layer": "slide_04_text_block_02.png",
         "action": "fade-in-up",
         "spoken_content": "text_block"
@@ -201,66 +207,66 @@
   },
   "slide_05": {
     "voiceover_file": "audio/slide_05_voiceover.mp3",
-    "start": 73.37,
-    "end": 93.29,
+    "start": 72.6,
+    "end": 92.52,
     "script": "Workflow automation 的目標是用幾乎零人工干預的方式，一步步完成整個工作流程 — 從 input 到 output，不需要複製貼上或手動切換工具。這就是為什麼複雜、多階段的任務可以變得可重複、可規模化。",
     "cues": [
       {
-        "time": 73.82,
+        "time": 73.05,
         "layer": "slide_05_title_01.png",
         "action": "fade-in-down",
         "spoken_content": "title"
       },
       {
-        "time": 75.59,
+        "time": 74.82,
         "layer": "slide_05_illustration_01.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 77.36,
+        "time": 76.59,
         "layer": "slide_05_chart_01.png",
         "action": "draw-in",
         "spoken_content": "chart"
       },
       {
-        "time": 79.14,
+        "time": 78.37,
         "layer": "slide_05_illustration_02.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 80.91,
+        "time": 80.14,
         "layer": "slide_05_key_point_card_01.png",
         "action": "fade-in-up",
         "spoken_content": "key_point_card"
       },
       {
-        "time": 82.68,
+        "time": 81.91,
         "layer": "slide_05_illustration_03.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 84.45,
+        "time": 83.68,
         "layer": "slide_05_key_point_card_02.png",
         "action": "fade-in-up",
         "spoken_content": "key_point_card"
       },
       {
-        "time": 86.22,
+        "time": 85.45,
         "layer": "slide_05_illustration_04.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 88.0,
+        "time": 87.23,
         "layer": "slide_05_key_point_card_03.png",
         "action": "fade-in-up",
         "spoken_content": "key_point_card"
       },
       {
-        "time": 89.77,
+        "time": 89.0,
         "layer": "slide_05_text_block_01.png",
         "action": "fade-in-up",
         "spoken_content": "text_block"
@@ -269,96 +275,96 @@
   },
   "slide_06": {
     "voiceover_file": "audio/slide_06_voiceover.mp3",
-    "start": 93.79,
-    "end": 114.91,
+    "start": 93.02,
+    "end": 114.14,
     "script": "這張 slide 展示了一條完整的 production pipeline：從 PDF 開始，經過 summary、script、storyboard、microphone、subtitle，到 final review。重點是，AI 現在可以協調 end-to-end 的流程，而不只是生成單一答案。它可以用來製作完整的教學影片，省去大量手動串接的工作。",
     "cues": [
       {
-        "time": 94.24,
+        "time": 93.47,
         "layer": "slide_06_title_01.png",
         "action": "fade-in-down",
         "spoken_content": "title"
       },
       {
-        "time": 95.5,
+        "time": 94.73,
         "layer": "slide_06_arrow_01.png",
         "action": "wipe-in",
         "spoken_content": "arrow"
       },
       {
-        "time": 96.76,
+        "time": 95.99,
         "layer": "slide_06_arrow_02.png",
         "action": "wipe-in",
         "spoken_content": "arrow"
       },
       {
-        "time": 98.02,
+        "time": 97.25,
         "layer": "slide_06_arrow_03.png",
         "action": "wipe-in",
         "spoken_content": "arrow"
       },
       {
-        "time": 99.29,
+        "time": 98.52,
         "layer": "slide_06_icon_01.png",
         "action": "pop-in",
         "spoken_content": "icon"
       },
       {
-        "time": 100.55,
+        "time": 99.78,
         "layer": "slide_06_illustration_01.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 101.81,
+        "time": 101.04,
         "layer": "slide_06_illustration_02.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 103.07,
+        "time": 102.3,
         "layer": "slide_06_illustration_03.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 104.33,
+        "time": 103.56,
         "layer": "slide_06_illustration_04.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 105.59,
+        "time": 104.82,
         "layer": "slide_06_illustration_05.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 106.85,
+        "time": 106.08,
         "layer": "slide_06_icon_02.png",
         "action": "pop-in",
         "spoken_content": "icon"
       },
       {
-        "time": 108.11,
+        "time": 107.34,
         "layer": "slide_06_arrow_04.png",
         "action": "wipe-in",
         "spoken_content": "arrow"
       },
       {
-        "time": 109.38,
+        "time": 108.61,
         "layer": "slide_06_illustration_06.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 110.64,
+        "time": 109.87,
         "layer": "slide_06_arrow_05.png",
         "action": "wipe-in",
         "spoken_content": "arrow"
       },
       {
-        "time": 111.9,
+        "time": 111.13,
         "layer": "slide_06_illustration_07.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
@@ -367,48 +373,48 @@
   },
   "slide_07": {
     "voiceover_file": "audio/slide_07_voiceover.mp3",
-    "start": 115.41,
-    "end": 132.88,
+    "start": 114.64,
+    "end": 132.11,
     "script": "這兩條路徑回答的是不同的問題。Vibe coding 問的是「我怎麼用這個工具？」；workflow automation 問的是「整個工作要怎麼被完成？」。一條把人類從 operator 變成 director，另一條從 user 變成 flow designer。",
     "cues": [
       {
-        "time": 115.86,
+        "time": 115.09,
         "layer": "slide_07_title_01.png",
         "action": "fade-in-down",
         "spoken_content": "title"
       },
       {
-        "time": 118.04,
+        "time": 117.27,
         "layer": "slide_07_text_block_01.png",
         "action": "fade-in-up",
         "spoken_content": "text_block"
       },
       {
-        "time": 120.22,
+        "time": 119.45,
         "layer": "slide_07_table_01.png",
         "action": "fade-in-up",
         "spoken_content": "table"
       },
       {
-        "time": 122.4,
+        "time": 121.63,
         "layer": "slide_07_illustration_01.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 124.59,
+        "time": 123.82,
         "layer": "slide_07_illustration_02.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 126.77,
+        "time": 126.0,
         "layer": "slide_07_illustration_03.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 128.95,
+        "time": 128.18,
         "layer": "slide_07_illustration_04.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
@@ -417,48 +423,48 @@
   },
   "slide_08": {
     "voiceover_file": "audio/slide_08_voiceover.mp3",
-    "start": 133.38,
-    "end": 150.66,
+    "start": 132.61,
+    "end": 149.89,
     "script": "真正的未來不是在兩者之間選擇，而是把它們結合起來。Vibe coding 處理單一步驟的執行，workflow automation 把步驟串成完整的序列。兩者加在一起，就形成了一個真正的 AI system，能夠執行、協調、並且持續改善。",
     "cues": [
       {
-        "time": 133.83,
+        "time": 133.06,
         "layer": "slide_08_title_01.png",
         "action": "fade-in-down",
         "spoken_content": "title"
       },
       {
-        "time": 135.98,
+        "time": 135.21,
         "layer": "slide_08_illustration_01.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 138.14,
+        "time": 137.37,
         "layer": "slide_08_illustration_02.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 140.29,
+        "time": 139.52,
         "layer": "slide_08_illustration_03.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 142.45,
+        "time": 141.68,
         "layer": "slide_08_illustration_04.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 144.6,
+        "time": 143.83,
         "layer": "slide_08_illustration_05.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 146.76,
+        "time": 145.99,
         "layer": "slide_08_illustration_06.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
@@ -467,72 +473,72 @@
   },
   "slide_09": {
     "voiceover_file": "audio/slide_09_voiceover.mp3",
-    "start": 151.16,
-    "end": 173.14,
+    "start": 150.39,
+    "end": 172.37,
     "script": "要建立這樣的系統，需要一張清晰的 blueprint：先找到真實場景、分析現有流程、找出 AI 機會、設計 interaction 和 workflow、接著 build prototype、test and iterate，最後 present and reflect。每一步都讓系統變得更真實、更可用。這就是從 AI user 成長為 AI workflow designer 的路徑。",
     "cues": [
       {
-        "time": 151.61,
+        "time": 150.84,
         "layer": "slide_09_title_01.png",
         "action": "fade-in-down",
         "spoken_content": "title"
       },
       {
-        "time": 153.41,
+        "time": 152.64,
         "layer": "slide_09_key_point_card_01.png",
         "action": "fade-in-up",
         "spoken_content": "key_point_card"
       },
       {
-        "time": 155.21,
+        "time": 154.44,
         "layer": "slide_09_key_point_card_02.png",
         "action": "fade-in-up",
         "spoken_content": "key_point_card"
       },
       {
-        "time": 157.0,
+        "time": 156.23,
         "layer": "slide_09_key_point_card_03.png",
         "action": "fade-in-up",
         "spoken_content": "key_point_card"
       },
       {
-        "time": 158.8,
+        "time": 158.03,
         "layer": "slide_09_key_point_card_04.png",
         "action": "fade-in-up",
         "spoken_content": "key_point_card"
       },
       {
-        "time": 160.6,
+        "time": 159.83,
         "layer": "slide_09_key_point_card_05.png",
         "action": "fade-in-up",
         "spoken_content": "key_point_card"
       },
       {
-        "time": 162.4,
+        "time": 161.63,
         "layer": "slide_09_illustration_01.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 164.2,
+        "time": 163.43,
         "layer": "slide_09_key_point_card_06.png",
         "action": "fade-in-up",
         "spoken_content": "key_point_card"
       },
       {
-        "time": 166.0,
+        "time": 165.23,
         "layer": "slide_09_table_01.png",
         "action": "fade-in-up",
         "spoken_content": "table"
       },
       {
-        "time": 167.79,
+        "time": 167.02,
         "layer": "slide_09_key_point_card_07.png",
         "action": "fade-in-up",
         "spoken_content": "key_point_card"
       },
       {
-        "time": 169.59,
+        "time": 168.82,
         "layer": "slide_09_icon_01.png",
         "action": "pop-in",
         "spoken_content": "icon"
@@ -541,60 +547,60 @@
   },
   "slide_10": {
     "voiceover_file": "audio/slide_10_voiceover.mp3",
-    "start": 173.64,
-    "end": 193.22,
+    "start": 172.87,
+    "end": 192.45,
     "script": "下一世代的工作需要新的核心技能：professional expression、prompt design、task deconstruction、workflow design，還有 quality control。這些能力讓人們能夠清晰且自信地引導 AI。目標不再只是把 AI 用得好，而是設計出好的工作系統。",
     "cues": [
       {
-        "time": 174.09,
+        "time": 173.32,
         "layer": "slide_10_title_01.png",
         "action": "fade-in-down",
         "spoken_content": "title"
       },
       {
-        "time": 176.02,
+        "time": 175.25,
         "layer": "slide_10_illustration_01.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 177.95,
+        "time": 177.18,
         "layer": "slide_10_icon_01.png",
         "action": "pop-in",
         "spoken_content": "icon"
       },
       {
-        "time": 179.88,
+        "time": 179.11,
         "layer": "slide_10_illustration_02.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 181.81,
+        "time": 181.04,
         "layer": "slide_10_illustration_03.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 183.75,
+        "time": 182.98,
         "layer": "slide_10_illustration_04.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 185.68,
+        "time": 184.91,
         "layer": "slide_10_illustration_05.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 187.61,
+        "time": 186.84,
         "layer": "slide_10_illustration_06.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
       },
       {
-        "time": 189.54,
+        "time": 188.77,
         "layer": "slide_10_illustration_07.png",
         "action": "zoom-in",
         "spoken_content": "illustration"
