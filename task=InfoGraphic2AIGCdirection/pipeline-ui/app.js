@@ -5,6 +5,7 @@ const state = {
   timing: null,
   slides: [],
   metadataBySlide: new Map(),
+  subtitleMap: {},
   selectedSlide: null,
   selectedLayer: null,
   view: 'composite',
@@ -37,6 +38,7 @@ const slideStats = document.getElementById('slideStats');
 const narrationText = document.getElementById('narrationText');
 const audioPlayer = document.getElementById('audioPlayer');
 const layerList = document.getElementById('layerList');
+const adjustmentNotes = document.getElementById('adjustmentNotes');
 
 const pad = v => String(v).padStart(2, '0');
 const slideKey = n => `slide_${pad(n)}`;
@@ -106,6 +108,41 @@ async function loadTask(taskPath) {
     const meta = await fetchJson(`${root}output/${slideKey(slide.slide)}/metadata.json`);
     state.metadataBySlide.set(slide.slide, meta);
   }));
+
+  // Parse subtitles
+  state.subtitleMap = {};
+  try {
+    const srtText = await (await fetch(`${root}narration/subtitles.srt`)).text();
+    const currentCues = [];
+    let globalIdx = 0;
+    for (const block of srtText.split(/\n\n+/)) {
+      const lines = block.trim().split('\n');
+      if (lines.length < 3) continue;
+      const timeMatch = lines[1].match(/([\d:,]+)\s*-->\s*([\d:,]+)/);
+      if (!timeMatch) continue;
+      const parseSrtTime = t => { const p = t.split(/[:,]/).map(Number); return p[0]*3600 + p[1]*60 + p[2] + p[3]/1000; };
+      const start = parseSrtTime(timeMatch[1]);
+      const end = parseSrtTime(timeMatch[2]);
+      const text = lines.slice(2).join('\n');
+      // Assign cue to a slide based on global cue index
+      currentCues.push({ start, end, text, globalIdx });
+      globalIdx++;
+    }
+    // Distribute cues across slides
+    let cueIdx = 0;
+    for (const slide of state.slides) {
+      const key = slideKey(slide.slide);
+      const slideStart = state.timing[key]?.start ?? 0;
+      const slideEnd = state.timing[key]?.end ?? 999;
+      const cues = [];
+      while (cueIdx < currentCues.length && currentCues[cueIdx].end <= slideEnd + 0.1) {
+        const c = currentCues[cueIdx];
+        cues.push({ start: c.start - slideStart, end: c.end - slideStart, text: c.text });
+        cueIdx++;
+      }
+      state.subtitleMap[key] = cues;
+    }
+  } catch (_) { }
 
   state.overrides = {};
   state.dirty = false;
@@ -190,6 +227,11 @@ function renderSelectedSlide() {
   renderPreview(slide, layers);
   renderTimeline(slide, meta, timing);
   renderLayerList(slide, meta);
+
+  // Load adjustment notes
+  const sk = slideKey(slide.slide);
+  const savedNote = state.overrides[sk]?.notes ?? '';
+  adjustmentNotes.value = savedNote;
 }
 
 function renderStats(slide, meta, timing, layers, skipped) {
@@ -283,6 +325,12 @@ function renderPreview(slide, layers) {
     img.style.zIndex = layer.z_index;
     compositePreview.appendChild(img);
   }
+
+  // Subtitle overlay
+  const sub = document.createElement('div');
+  sub.className = 'subtitle-overlay';
+  sub.id = 'subtitleOverlay';
+  compositePreview.appendChild(sub);
 }
 
 function renderTimeline(slide, meta, timing) {
@@ -502,6 +550,8 @@ playBtn.addEventListener('click', () => {
   clearTimers();
   playTimers = [];
   document.querySelectorAll('.stage-preview .layer-img').forEach(el => el.classList.remove('show'));
+  const subEl = document.getElementById('subtitleOverlay');
+  if (subEl) subEl.classList.remove('show');
 
   compositePreview.classList.add('playing');
   playBtn.textContent = '■ Reset';
@@ -514,6 +564,19 @@ playBtn.addEventListener('click', () => {
     playTimers.push(timer);
   });
 
+  // Subtitle cues
+  const cues = state.subtitleMap[slideKey(slide.slide)] || [];
+  for (const cue of cues) {
+    const showTimer = setTimeout(() => {
+      if (subEl) { subEl.textContent = cue.text; subEl.classList.add('show'); }
+    }, cue.start * 1000);
+    playTimers.push(showTimer);
+    const hideTimer = setTimeout(() => {
+      if (subEl) subEl.classList.remove('show');
+    }, cue.end * 1000);
+    playTimers.push(hideTimer);
+  }
+
   // Play narration audio
   const timing = state.timing[slideKey(slide.slide)];
   if (timing?.voiceover_file) {
@@ -524,6 +587,7 @@ playBtn.addEventListener('click', () => {
   // Auto-stop at end of slide
   const endTimer = setTimeout(() => {
     compositePreview.classList.remove('playing');
+    if (subEl) subEl.classList.remove('show');
     playBtn.textContent = '▶ Play slide';
     playBtn.classList.remove('playing');
   }, slide.duration * 1000 + 500);
@@ -534,6 +598,18 @@ function clearTimers() {
   playTimers.forEach(clearTimeout);
   playTimers = [];
 }
+
+adjustmentNotes.addEventListener('input', () => {
+  const sk = slideKey(state.selectedSlide?.slide);
+  if (!sk) return;
+  const s = slideOverride(state.selectedSlide.slide);
+  if (adjustmentNotes.value.trim()) {
+    s.notes = adjustmentNotes.value;
+  } else {
+    delete s.notes;
+  }
+  markDirty();
+});
 
 hyperframesBtn.addEventListener('click', () => {
   const path = state.taskPath
