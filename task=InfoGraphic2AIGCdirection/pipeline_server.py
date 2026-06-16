@@ -242,11 +242,15 @@ def apply_overrides(overrides):
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        path = self.path.split("?")[0]
-        if path == "/":
-            path = "/index.html"
+        path = self.path.split("?")[0].lstrip("/")
+        if not path:
+            path = "index.html"
 
-        file_path = ROOT / path.lstrip("/")
+        # Auto-serve index.html for directory paths
+        file_path = ROOT / path
+        if file_path.is_dir():
+            file_path = file_path / "index.html"
+
         if file_path.is_file() and not file_path.is_symlink():
             ext = file_path.suffix.lower()
             self.send_response(200)
