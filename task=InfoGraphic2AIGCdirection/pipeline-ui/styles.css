@@ -480,9 +480,9 @@ button, input { font: inherit; }
 
 .inspector {
   display: grid;
-  grid-template-rows: auto auto auto 1fr;
+  grid-template-rows: auto auto 1fr auto;
   gap: 12px;
-  overflow: hidden;
+  min-height: 0;
 }
 
 .card {
