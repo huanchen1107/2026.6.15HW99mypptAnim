@@ -328,6 +328,26 @@ def auto_process_note(note, slide_key, logs):
     return actions, did_tts
 
 
+def render_slides(slide_from, slide_to):
+    """Render a range of slides to MP4."""
+    log_info(f"Rendering slides {slide_from}-{slide_to} ...")
+    render_script = SKILL_DIR / "render_final_video.py"
+    if not render_script.exists():
+        return f"Render script not found at {render_script}"
+    env = os.environ.copy()
+    env["RENDER_SLIDES"] = f"{slide_from},{slide_to}"
+    r = subprocess.run(
+        [sys.executable, str(render_script)],
+        capture_output=True, text=True, cwd=str(TASK), env=env, timeout=600
+    )
+    if r.returncode:
+        return f"Render error: {redact(r.stderr.strip())}"
+    final = TASK / "final" / "final_video_with_voiceover_and_subtitles.mp4"
+    if final.exists():
+        return f"Rendered: final/final_video_with_voiceover_and_subtitles.mp4 ({final.stat().st_size//1024//1024}MB)\n{r.stdout.strip()}"
+    return f"Render ran but output not found.\n{r.stdout.strip()}"
+
+
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         path = self.path.split("?")[0].lstrip("/")
@@ -397,6 +417,13 @@ h1 {{ color: #7dd3fc; }}
                 return
             suggestions = suggest_slide(slide_num)
             self._json(200, {"status": "ok", "suggestions": suggestions})
+        elif self.path == "/render":
+            length = int(self.headers.get("Content-Length", 0))
+            try: body = json.loads(self.rfile.read(length))
+            except Exception as e: self._json(400, {"status":"error","message":str(e)}); return
+            fr = body.get("from", 1); to = body.get("to", 99)
+            output = render_slides(fr, to)
+            self._json(200, {"status": "ok", "output": output})
         else:
             self._json(404, {"status": "error", "message": "Not found"})
 

@@ -37,6 +37,7 @@
         <div class="viewer-actions">
           <button id="playBtn" class="play-btn">▶ Play slide</button>
           <button id="hfBtn" class="hf-btn">Open in HyperFrames</button>
+          <button id="renderBtn" class="render-btn">MP4 export</button>
           <label class="switch"><input type="checkbox" id="showSkipped"><span>Show skipped</span></label>
         </div>
       </div>
@@ -70,11 +71,29 @@
         <p id="narration" class="narration"></p>
         <audio id="audio" controls></audio>
       </section>
+      <section class="card">
+        <div class="panel-title">Adjustment notes</div>
+        <textarea id="notes" class="notes-input" placeholder="Write what you want to adjust on this slide…"></textarea>
+      </section>
       <section class="card layers-card">
         <div class="panel-title">Layers</div>
         <div id="layerList" class="layer-list"></div>
       </section>
     </aside>
+
+    <div id="renderDialog" class="dialog" hidden>
+      <div class="dialog-card">
+        <h3>MP4 Export</h3>
+        <p class="eyebrow">Renders the final MP4 with voiceover + subtitles</p>
+        <label>From slide <input id="renderFrom" type="number" min="1" value="1" style="width:60px"></label>
+        <label style="margin-left:8px">to <input id="renderTo" type="number" min="1" value="1" style="width:60px"></label>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button id="renderGo" class="play-btn">Render</button>
+          <button id="renderClose" class="hf-btn">Cancel</button>
+        </div>
+        <pre id="renderLog" style="margin-top:10px;font-size:11px;color:var(--ok);white-space:pre-wrap;max-height:150px;overflow:auto"></pre>
+      </div>
+    </div>
   </main>
 
   <script src="app.js?v=6"></script>
