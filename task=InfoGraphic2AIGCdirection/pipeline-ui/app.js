@@ -165,7 +165,7 @@ async function loadTask(taskPath) {
   selectSlide(state.slides[0]?.slide);
   statusEl.textContent = `${state.slides.length} slides loaded from ${taskPath}.`;
   saveBtn.disabled = !state.dirty;
-  applyBtn.disabled = !state.dirty;
+  applyBtn.disabled = false; // always enable — user can apply even without edits
   applyBtn.disabled = !state.dirty;
 }
 
@@ -450,8 +450,9 @@ applyBtn.addEventListener('click', async () => {
   applyBtn.disabled = true;
   applyBtn.classList.add('running');
   applyBtn.textContent = 'Running…';
-  pipelineLog.textContent = 'Sending overrides to pipeline server…\n';
-  console.log('[apply] sending POST to http://localhost:8001/apply');
+  pipelineLog.textContent = 'POST /apply → Sending overrides…\n';
+  pipelineLog.parentElement.style.borderColor = 'var(--accent-2)';
+  console.log('[apply] sending POST to /apply');
 
   try {
     const res = await fetch('/apply', {
@@ -465,16 +466,19 @@ applyBtn.addEventListener('click', async () => {
     if (data.status === 'ok') {
       const logLines = data.logs || [];
       pipelineLog.textContent = logLines.join('\n') + '\n\n✓ Pipeline applied. Reloading page…';
+      pipelineLog.parentElement.style.borderColor = 'var(--ok)';
       console.log('[apply] success, reloading task data');
       statusEl.textContent = '✓ Pipeline applied — reloading…';
       await loadTask(state.taskPath);
       statusEl.textContent = '✓ Pipeline applied. ' + statusEl.textContent;
     } else {
       pipelineLog.textContent = `Error: ${data.message || 'unknown'}`;
+      pipelineLog.parentElement.style.borderColor = 'var(--danger)';
       console.error('[apply] server error:', data);
     }
   } catch (err) {
-    pipelineLog.textContent = `Failed to reach pipeline server.\n\nRun from the task directory:\n  cd task=InfoGraphic2AIGCdirection\n  python pipeline_server.py 8000\n\nThen open http://localhost:8000/task=InfoGraphic2AIGCdirection/pipeline-ui/\n\nError: ${err.message}`;
+    pipelineLog.textContent = `Failed to reach pipeline server.\n\nRun: cd task=InfoGraphic2AIGCdirection && python pipeline_server.py 8000\n\nError: ${err.message}`;
+    pipelineLog.parentElement.style.borderColor = 'var(--danger)';
     console.error('[apply] fetch error:', err);
   } finally {
     applyBtn.disabled = false;
