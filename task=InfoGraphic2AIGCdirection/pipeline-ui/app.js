@@ -93,6 +93,7 @@ function markDirty() {
 }
 
 async function loadTask(taskPath) {
+  console.log('[loadTask] loading:', taskPath);
   const root = taskRoot(taskPath);
   const [project, timing] = await Promise.all([
     fetchJson(`${root}hyperframes/project.json`),
@@ -441,11 +442,13 @@ saveBtn.addEventListener('click', () => {
 });
 
 applyBtn.addEventListener('click', async () => {
+  console.log('[apply] clicked, overrides:', Object.keys(state.overrides).length, 'slides');
   const payload = JSON.stringify(state.overrides);
   applyBtn.disabled = true;
   applyBtn.classList.add('running');
   applyBtn.textContent = 'Running…';
   pipelineLog.textContent = 'Sending overrides to pipeline server…\n';
+  console.log('[apply] sending POST to http://localhost:8001/apply');
 
   try {
     const res = await fetch('http://localhost:8001/apply', {
@@ -453,18 +456,23 @@ applyBtn.addEventListener('click', async () => {
       headers: { 'Content-Type': 'application/json' },
       body: payload,
     });
+    console.log('[apply] response status:', res.status);
     const data = await res.json();
+    console.log('[apply] response data:', data);
     if (data.status === 'ok') {
       const logLines = data.logs || [];
       pipelineLog.textContent = logLines.join('\n') + '\n\n✓ Pipeline applied. Reloading page…';
+      console.log('[apply] success, reloading task data');
       statusEl.textContent = '✓ Pipeline applied — reloading…';
       await loadTask(state.taskPath);
       statusEl.textContent = '✓ Pipeline applied. ' + statusEl.textContent;
     } else {
       pipelineLog.textContent = `Error: ${data.message || 'unknown'}`;
+      console.error('[apply] server error:', data);
     }
   } catch (err) {
     pipelineLog.textContent = `Failed to connect to pipeline server.\n\nStart it in the task directory:\n  python pipeline_server.py\n\nError: ${err.message}`;
+    console.error('[apply] fetch error:', err);
   } finally {
     applyBtn.disabled = false;
     applyBtn.classList.remove('running');

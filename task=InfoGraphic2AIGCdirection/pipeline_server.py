@@ -23,6 +23,18 @@ TASK = HERE  # running from task directory
 ROOT = TASK.parent
 SKILL_DIR = ROOT / "skill-pptx-to-animated-video" / "scripts"
 
+RECENT_LOGS = []  # global log buffer for GET status page
+MAX_LOG_ENTRIES = 100
+
+
+def log_info(msg):
+    ts = __import__("datetime").datetime.now().strftime("%H:%M:%S")
+    entry = f"[{ts}] {msg}"
+    RECENT_LOGS.append(entry)
+    if len(RECENT_LOGS) > MAX_LOG_ENTRIES:
+        RECENT_LOGS.pop(0)
+    sys.stderr.write(f"[pipeline-server] {msg}\n")
+
 
 def redact(s):
     """Shorten long strings for log messages."""
@@ -123,11 +135,15 @@ def suggest_slide(slide_num):
 def apply_overrides(overrides):
     logs = []
 
+    log_info(f"Received overrides for {len(overrides)} slide(s)")
+
     # ── 0. Log adjustment notes ────────────────────────────────────────
     for key, ov in overrides.items():
         if ov.get("notes"):
             logs.append(f"[{key}] notes: {ov['notes'][:120]}")
+            log_info(f"  {key}: notes present")
 
+    log_info("Step 1/4: Updating narration_script.md ...")
     # ── 1. Update narration_script.md ──────────────────────────────────
     nar_path = TASK / "narration" / "narration_script.md"
     if nar_path.exists():
@@ -151,6 +167,7 @@ def apply_overrides(overrides):
             nar_path.write_text(text, encoding="utf-8")
             logs.append(f"Updated narration_script.md")
 
+    log_info("Step 2/4: Patching metadata.json ...")
     # ── 2. Patch metadata.json for each slide with layer overrides ─────
     for key, ov in overrides.items():
         layer_ovs = ov.get("layers")
@@ -182,6 +199,7 @@ def apply_overrides(overrides):
             write_json(meta_path, meta)
             logs.append(f"Patched metadata slide {n:02d}")
 
+    log_info("Step 3/4: Re-running TTS ...")
     # ── 3. Re-run TTS if any narration changed ─────────────────────────
     narration_changed = any(ov.get("narration") for ov in overrides.values())
     if narration_changed:
@@ -194,6 +212,7 @@ def apply_overrides(overrides):
         else:
             logs.append(f"TTS script not found at {tts_script}")
 
+    log_info("Step 4/4: Rebuilding timeline ...")
     # ── 4. Rebuild timeline ────────────────────────────────────────────
     build_script = SKILL_DIR / "build_timeline.py"
     if build_script.exists():
@@ -209,11 +228,32 @@ def apply_overrides(overrides):
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
+        html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Pipeline Server Status</title>
+<style>
+body {{ font-family: monospace; background: #0d1117; color: #edf3fb; padding: 20px; }}
+h1 {{ color: #7dd3fc; }}
+.log {{ color: #86efac; white-space: pre-wrap; }}
+.entry {{ padding: 4px 0; border-bottom: 1px solid #303946; }}
+.meta {{ color: #93a4b8; font-size: 12px; }}
+</style></head><body>
+<h1>Pipeline Server</h1>
+<p class="meta">Task: {TASK} | Port: {self.server.server_port}</p>
+<p class="meta">Endpoints: POST /apply | POST /suggest</p>
+<hr>
+<h2>Activity log</h2>
+<div class="log">"""
+        if not RECENT_LOGS:
+            html += "<div class='entry'>Waiting for requests…</div>"
+        for entry in RECENT_LOGS[-50:]:
+            html += f"<div class='entry'>{entry}</div>"
+        html += "</div></body></html>"
         self.send_response(200)
         self._cors()
-        self.send_header("Content-Type", "text/plain")
+        self.send_header("Content-Type", "text/html")
+        self.send_header("Cache-Control", "no-cache")
         self.end_headers()
-        self.wfile.write(b"Pipeline server running. Use POST /apply or POST /suggest from the Pipeline UI.")
+        self.wfile.write(html.encode())
 
     def do_POST(self):
         if self.path == "/apply":
