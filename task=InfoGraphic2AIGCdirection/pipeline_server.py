@@ -46,6 +46,80 @@ def run_python(script, *args, cwd=None):
     return result
 
 
+def suggest_slide(slide_num):
+    """Analyze a slide's metadata and return improvement suggestions."""
+    meta_path = TASK / "output" / f"slide_{slide_num:02d}" / "metadata.json"
+    meta = load_json(meta_path)
+    if not meta:
+        return [{"type": "error", "message": f"metadata for slide {slide_num:02d} not found"}]
+
+    layers = meta.get("layers", [])
+    dur = meta.get("duration", 10)
+    suggestions = []
+
+    # ─── 1. Merge text blocks on the same line ─────────────────────────
+    texts = [(i, l) for i, l in enumerate(layers) if l.get("type") == "text_block"]
+    for i in range(len(texts)):
+        for j in range(i + 1, len(texts)):
+            _, a = texts[i]
+            _, b = texts[j]
+            ay_mid = a["y"] + a["height"] / 2
+            by_mid = b["y"] + b["height"] / 2
+            if abs(ay_mid - by_mid) < max(a["height"], b["height"]) * 0.6:
+                gap = max(0, min(a["x"] + a["width"], b["x"] + b["width"]) - max(a["x"], b["x"]))
+                gap_x = max(0, max(a["x"], b["x"]) - min(a["x"] + a["width"], b["x"] + b["width"]))
+                if gap_x < 30 and gap_x > 2:
+                    suggestions.append({
+                        "type": "merge_text",
+                        "message": f"Merge \"{a['name']}\" and \"{b['name']}\" — same line, {gap_x}px apart",
+                        "layers": [a["name"], b["name"]],
+                        "action": {"merge": [a["name"], b["name"]]},
+                    })
+
+    # ─── 2. Reading order vs z_index ───────────────────────────────────
+    sorted_layers = sorted(layers, key=lambda l: (l["y"], l["x"]))
+    z_order = sorted(layers, key=lambda l: l["z_index"])
+    for i in range(min(len(sorted_layers), len(z_order))):
+        if sorted_layers[i]["name"] != z_order[i]["name"]:
+            s = sorted_layers[i]
+            z = z_order[i]
+            suggestions.append({
+                "type": "reorder",
+                "message": f"\"{s['name']}\" reads before \"{z['name']}\" but has higher z_index ({s['z_index']} vs {z['z_index']})",
+                "layers": [s["name"], z["name"]],
+                "action": {"swap_z": [s["name"], z["name"]]},
+            })
+            break  # one at a time to keep it simple
+
+    # ─── 3. Clustered starts ───────────────────────────────────────────
+    if len(layers) >= 4:
+        starts = sorted([l["start"] for l in layers])
+        for k in range(len(starts) - 2):
+            if starts[k + 2] - starts[k] < 0.6:
+                suggestions.append({
+                    "type": "spread",
+                    "message": f"3 layers start within {starts[k+2]-starts[k]:.2f}s (around {starts[k]:.1f}s) — consider spreading them",
+                    "action": {},
+                })
+                break
+
+    # ─── 4. Layer count vs duration ────────────────────────────────────
+    if len(layers) <= 2 and dur > 12:
+        suggestions.append({
+            "type": "subdivide",
+            "message": f"Only {len(layers)} layers in {dur:.0f}s of narration — consider splitting into more reveal steps",
+            "action": {},
+        })
+    elif len(layers) >= 12 and dur < 15:
+        suggestions.append({
+            "type": "consolidate",
+            "message": f"{len(layers)} layers packed into {dur:.0f}s — may feel rushed; consider merging small elements",
+            "action": {},
+        })
+
+    return suggestions
+
+
 def apply_overrides(overrides):
     logs = []
 
@@ -139,6 +213,19 @@ class Handler(BaseHTTPRequestHandler):
                 return
             logs = apply_overrides(body)
             self._json(200, {"status": "ok", "logs": logs})
+        elif self.path == "/suggest":
+            length = int(self.headers.get("Content-Length", 0))
+            try:
+                body = json.loads(self.rfile.read(length))
+            except Exception as e:
+                self._json(400, {"status": "error", "message": str(e)})
+                return
+            slide_num = body.get("slide")
+            if not slide_num:
+                self._json(400, {"status": "error", "message": "Missing 'slide' in body"})
+                return
+            suggestions = suggest_slide(slide_num)
+            self._json(200, {"status": "ok", "suggestions": suggestions})
         else:
             self._json(404, {"status": "error", "message": "Not found"})
 

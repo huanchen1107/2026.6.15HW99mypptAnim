@@ -27,6 +27,9 @@ const showSkippedLayers = document.getElementById('showSkippedLayers');
 const compositePreview = document.getElementById('compositePreview');
 const assetPreview = document.getElementById('assetPreview');
 const timeline = document.getElementById('timeline');
+const suggestBtn = document.getElementById('suggestBtn');
+const suggestionsPanel = document.getElementById('suggestionsPanel');
+const suggestionsList = document.getElementById('suggestionsList');
 const slideStats = document.getElementById('slideStats');
 const narrationText = document.getElementById('narrationText');
 const audioPlayer = document.getElementById('audioPlayer');
@@ -399,6 +402,54 @@ applyBtn.addEventListener('click', async () => {
     applyBtn.disabled = false;
     applyBtn.classList.remove('running');
     applyBtn.textContent = 'Apply to pipeline';
+  }
+});
+
+suggestBtn.addEventListener('click', async () => {
+  if (!state.selectedSlide) return;
+  suggestBtn.disabled = true;
+  suggestBtn.textContent = 'Analyzing…';
+  suggestionsPanel.hidden = false;
+  suggestionsList.innerHTML = '<div class="suggestion-item">Running analysis…</div>';
+
+  try {
+    const res = await fetch('http://localhost:8001/suggest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slide: state.selectedSlide.slide }),
+    });
+    const data = await res.json();
+    suggestionsList.innerHTML = '';
+    if (data.status === 'ok' && data.suggestions?.length) {
+      for (const s of data.suggestions) {
+        const icons = { merge_text: '🔗', reorder: '↕️', spread: '⏱', subdivide: '✂️', consolidate: '📦', error: '⚠️' };
+        const el = document.createElement('div');
+        el.className = 'suggestion-item';
+        el.innerHTML = `
+          <span class="s-icon">${icons[s.type] || '💡'}</span>
+          <div class="s-body">
+            <div class="s-type">${s.type}</div>
+            <div>${s.message}</div>
+          </div>
+          ${s.layers?.length ? '<button class="s-apply">Apply</button>' : ''}
+        `;
+        const applyBtn_ = el.querySelector('.s-apply');
+        if (applyBtn_) {
+          applyBtn_.addEventListener('click', () => {
+            applyBtn_.disabled = true;
+            applyBtn_.textContent = '✓';
+          });
+        }
+        suggestionsList.appendChild(el);
+      }
+    } else {
+      suggestionsList.innerHTML = '<div class="suggestion-item">No suggestions for this slide.</div>';
+    }
+  } catch (err) {
+    suggestionsList.innerHTML = `<div class="suggestion-item">⚠️ Could not reach pipeline server.\nStart: <code>python pipeline_server.py 8001</code></div>`;
+  } finally {
+    suggestBtn.disabled = false;
+    suggestBtn.textContent = 'Analyze slide';
   }
 });
 
