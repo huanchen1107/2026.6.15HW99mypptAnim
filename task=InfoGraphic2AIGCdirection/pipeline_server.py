@@ -151,7 +151,11 @@ def apply_overrides(overrides):
 
     log_info(f"Received overrides for {len(overrides)} slide(s)")
 
-    # ── 0. Log adjustment notes ────────────────────────────────────────
+    # ── 0. Save overrides to pipeline_state.json ───────────────────────
+    state_path = TASK / "pipeline_state.json"
+    write_json(state_path, overrides)
+    logs.append(f"Saved overrides to pipeline_state.json")
+
     for key, ov in overrides.items():
         if ov.get("notes"):
             logs.append(f"[{key}] notes: {ov['notes'][:120]}")

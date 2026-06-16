@@ -446,12 +446,29 @@ saveBtn.addEventListener('click', () => {
 
 applyBtn.addEventListener('click', async () => {
   console.log('[apply] clicked, overrides:', Object.keys(state.overrides).length, 'slides');
+
+  // Summarize what will be applied
+  const changes = [];
+  for (const [k, ov] of Object.entries(state.overrides)) {
+    if (ov.narration) changes.push(`${k}: narration changed`);
+    if (ov.notes) changes.push(`${k}: has notes`);
+    if (ov.layers && Object.keys(ov.layers).length) changes.push(`${k}: ${Object.keys(ov.layers).length} layer(s) edited`);
+  }
+
+  if (!changes.length) {
+    pipelineLog.textContent = 'No edits to apply.\n\nEdit narration, layer timing, or animation first, then click Apply.';
+    pipelineLog.parentElement.style.borderColor = 'var(--accent-2)';
+    return;
+  }
+
+  pipelineLog.textContent = 'Applying:\n' + changes.join('\n') + '\n\nPOST /apply → Sending…\n';
+  pipelineLog.parentElement.style.borderColor = 'var(--accent-2)';
+  pipelineLog.parentElement.scrollIntoView({ behavior: 'smooth' });
+
   const payload = JSON.stringify(state.overrides);
   applyBtn.disabled = true;
   applyBtn.classList.add('running');
   applyBtn.textContent = 'Running…';
-  pipelineLog.textContent = 'POST /apply → Sending overrides…\n';
-  pipelineLog.parentElement.style.borderColor = 'var(--accent-2)';
   console.log('[apply] sending POST to /apply');
 
   try {
@@ -465,7 +482,12 @@ applyBtn.addEventListener('click', async () => {
     console.log('[apply] response data:', data);
     if (data.status === 'ok') {
       const logLines = data.logs || [];
-      pipelineLog.textContent = logLines.join('\n') + '\n\n✓ Pipeline applied. Reloading page…';
+      const hasNotes = logLines.some(l => l.includes('notes:'));
+      let summary = logLines.join('\n') + '\n\n✓ Pipeline applied. Reloading page…';
+      if (hasNotes) {
+        summary += '\n\n📝 Adjustment notes saved. Tell the agent to apply them.';
+      }
+      pipelineLog.textContent = summary;
       pipelineLog.parentElement.style.borderColor = 'var(--ok)';
       console.log('[apply] success, reloading task data');
       statusEl.textContent = '✓ Pipeline applied — reloading…';
