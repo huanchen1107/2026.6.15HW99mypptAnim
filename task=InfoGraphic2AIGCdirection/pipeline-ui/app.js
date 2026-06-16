@@ -114,3 +114,5 @@ function stop() {
   document.querySelectorAll('#slide .layer').forEach(el => el.classList.remove('show'));
   caption.classList.remove('show');
 }
+
+init();
