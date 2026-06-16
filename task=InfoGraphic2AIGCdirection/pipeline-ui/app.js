@@ -455,7 +455,11 @@ applyBtn.addEventListener('click', async () => {
     });
     const data = await res.json();
     if (data.status === 'ok') {
-      pipelineLog.textContent = (data.logs || []).join('\n') + '\n\n✓ Pipeline applied successfully.';
+      const logLines = data.logs || [];
+      pipelineLog.textContent = logLines.join('\n') + '\n\n✓ Pipeline applied. Reloading page…';
+      statusEl.textContent = '✓ Pipeline applied — reloading…';
+      await loadTask(state.taskPath);
+      statusEl.textContent = '✓ Pipeline applied. ' + statusEl.textContent;
     } else {
       pipelineLog.textContent = `Error: ${data.message || 'unknown'}`;
     }
