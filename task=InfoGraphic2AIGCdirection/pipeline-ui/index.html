@@ -114,9 +114,10 @@
   <template id="loadErrorTemplate">
     <div class="load-error">
       <strong>Could not load project files.</strong>
-      <p>From the project root, run:</p>
-      <p><code>python -m http.server 8000</code></p>
-      <p>Then open <code>/task=&lt;name&gt;/pipeline-ui/</code> in your browser.</p>
+      <p>From the task directory, run:</p>
+      <p><code>cd task=InfoGraphic2AIGCdirection</code></p>
+      <p><code>python pipeline_server.py 8000</code></p>
+      <p>Then open <code>http://localhost:8000/task=InfoGraphic2AIGCdirection/pipeline-ui/</code></p>
     </div>
   </template>
 

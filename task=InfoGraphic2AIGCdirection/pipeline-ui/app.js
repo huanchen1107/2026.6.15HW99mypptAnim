@@ -454,7 +454,7 @@ applyBtn.addEventListener('click', async () => {
   console.log('[apply] sending POST to http://localhost:8001/apply');
 
   try {
-    const res = await fetch('http://localhost:8001/apply', {
+    const res = await fetch('/apply', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: payload,
@@ -474,7 +474,7 @@ applyBtn.addEventListener('click', async () => {
       console.error('[apply] server error:', data);
     }
   } catch (err) {
-    pipelineLog.textContent = `Failed to connect to pipeline server.\n\nStart it in the task directory:\n  python pipeline_server.py\n\nError: ${err.message}`;
+    pipelineLog.textContent = `Failed to reach pipeline server.\n\nRun from the task directory:\n  cd task=InfoGraphic2AIGCdirection\n  python pipeline_server.py 8000\n\nThen open http://localhost:8000/task=InfoGraphic2AIGCdirection/pipeline-ui/\n\nError: ${err.message}`;
     console.error('[apply] fetch error:', err);
   } finally {
     applyBtn.disabled = false;
@@ -491,7 +491,7 @@ suggestBtn.addEventListener('click', async () => {
   suggestionsList.innerHTML = '<div class="suggestion-item">Running analysis…</div>';
 
   try {
-    const res = await fetch('http://localhost:8001/suggest', {
+    const res = await fetch('/suggest', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ slide: state.selectedSlide.slide }),

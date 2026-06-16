@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-"""Pipeline action server — receives pipeline_state.json overrides and applies them.
+"""Pipeline server — serves the UI AND handles pipeline apply/suggest.
 
 Run from the task directory:
     cd task=InfoGraphic2AIGCdirection
     python pipeline_server.py [port]
 
-The UI POSTs to http://localhost:<port>/apply.
+Serves all static files from the project root, plus:
+    POST /apply   — apply pipeline_state.json overrides
+    POST /suggest — analyze a slide
 """
 
 import json
+import mimetypes
 import os
 import re
 import shutil
@@ -22,6 +25,17 @@ HERE = Path(__file__).resolve().parent
 TASK = HERE  # running from task directory
 ROOT = TASK.parent
 SKILL_DIR = ROOT / "skill-pptx-to-animated-video" / "scripts"
+
+RECENT_LOGS = []  # global log buffer for GET status page
+MAX_LOG_ENTRIES = 100
+
+MIME = {
+    ".html": "text/html", ".css": "text/css", ".js": "text/javascript",
+    ".json": "application/json", ".png": "image/png", ".jpg": "image/jpeg",
+    ".mp3": "audio/mpeg", ".mp4": "video/mp4", ".srt": "text/plain",
+    ".vtt": "text/plain", ".wav": "audio/wav", ".svg": "image/svg+xml",
+    ".pdf": "application/pdf", ".ico": "image/x-icon",
+}
 
 RECENT_LOGS = []  # global log buffer for GET status page
 MAX_LOG_ENTRIES = 100
@@ -228,7 +242,20 @@ def apply_overrides(overrides):
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
+        path = self.path.split("?")[0]
+        if path == "/":
+            path = "/index.html"
+
+        file_path = ROOT / path.lstrip("/")
+        if file_path.is_file() and not file_path.is_symlink():
+            ext = file_path.suffix.lower()
+            self.send_response(200)
+            self.send_header("Content-Type", MIME.get(ext, "application/octet-stream"))
+            self.end_headers()
+            self.wfile.write(file_path.read_bytes())
+        else:
+            # Fallback: show server status page
+            html = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>Pipeline Server Status</title>
 <style>
 body {{ font-family: monospace; background: #0d1117; color: #edf3fb; padding: 20px; }}
@@ -238,22 +265,22 @@ h1 {{ color: #7dd3fc; }}
 .meta {{ color: #93a4b8; font-size: 12px; }}
 </style></head><body>
 <h1>Pipeline Server</h1>
-<p class="meta">Task: {TASK} | Port: {self.server.server_port}</p>
+<p class="meta">Task: {TASK.name} | Port: {self.server.server_port}</p>
+<p class="meta">Serving from: {ROOT}</p>
 <p class="meta">Endpoints: POST /apply | POST /suggest</p>
 <hr>
 <h2>Activity log</h2>
 <div class="log">"""
-        if not RECENT_LOGS:
-            html += "<div class='entry'>Waiting for requests…</div>"
-        for entry in RECENT_LOGS[-50:]:
-            html += f"<div class='entry'>{entry}</div>"
-        html += "</div></body></html>"
-        self.send_response(200)
-        self._cors()
-        self.send_header("Content-Type", "text/html")
-        self.send_header("Cache-Control", "no-cache")
-        self.end_headers()
-        self.wfile.write(html.encode())
+            if not RECENT_LOGS:
+                html += "<div class='entry'>Waiting for requests…</div>"
+            for entry in RECENT_LOGS[-50:]:
+                html += f"<div class='entry'>{entry}</div>"
+            html += "</div></body></html>"
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html")
+            self.send_header("Cache-Control", "no-cache")
+            self.end_headers()
+            self.wfile.write(html.encode())
 
     def do_POST(self):
         if self.path == "/apply":
